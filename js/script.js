@@ -766,3 +766,31 @@ function threedee(e) {
 	header.style.MozTransform = `translateZ(0) rotateX(${y *
 		1.5}deg) rotateY(${-x * 1.5}deg)`
 }
+
+
+/* 修复分享按钮点击无反应的问题 */
+(function($) {
+    // 等待文档加载完成
+    $(document).ready(function() {
+        
+        // 获取分享按钮和包裹容器
+        var $shareFab = $('#shareFab');
+        var $shareWrap = $('.page-share-wrap');
+        var $mask = $('.global-share-mask'); // 如果有遮罩层的话
+
+        // 点击按钮时的逻辑
+        $shareFab.on('click', function(e) {
+            e.stopPropagation(); // 防止冒泡
+            $shareFab.toggleClass('in'); // 给按钮添加/移除 'in' 类（控制旋转）
+            $shareWrap.toggleClass('in'); // 给菜单容器添加/移除 'in' 类（控制显示）
+        });
+
+        // 点击页面其他地方关闭分享菜单（提升体验）
+        $(document).on('click', function(e) {
+            if ($shareWrap.hasClass('in') && !$(e.target).closest('.page-share-wrap').length && !$(e.target).closest('#shareFab').length) {
+                $shareFab.removeClass('in');
+                $shareWrap.removeClass('in');
+            }
+        });
+    });
+})(jQuery);
