@@ -2340,6 +2340,10 @@ img {
   max-width: 100%;
   border: none;
 }
+img[style*="zoom"] {
+  max-width: none !important;
+  width: auto !important;
+}
 img,
 input,
 button,
