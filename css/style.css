@@ -4447,6 +4447,10 @@ pre .javascript .function {
   margin-top: 10px;
   color: #000;
 }
+.post-content img[style*="zoom"] {
+  width: auto !important;
+  max-width: none !important;
+}
 .post-content .headerlink {
   visibility: hidden;
   margin-left: -1em;
@@ -4624,6 +4628,11 @@ pre .javascript .function {
 .post-content .excerpt-desc {
   text-align: center;
   color: #666;
+}
+.page-content img[style*="zoom"],
+.post-content img[style*="zoom"] {
+  width: auto !important;
+  max-width: none !important;
 }
 .comments {
   padding: 40px 0 0;
