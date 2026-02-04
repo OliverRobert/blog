@@ -770,27 +770,40 @@ function threedee(e) {
 
 /* 修复分享按钮点击无反应的问题 */
 (function($) {
-    // 等待文档加载完成
     $(document).ready(function() {
-        
-        // 获取分享按钮和包裹容器
         var $shareFab = $('#shareFab');
-        var $shareWrap = $('.page-share-wrap');
-        var $mask = $('.global-share-mask'); // 如果有遮罩层的话
-
-        // 点击按钮时的逻辑
-        $shareFab.on('click', function(e) {
-            e.stopPropagation(); // 防止冒泡
-            $shareFab.toggleClass('in'); // 给按钮添加/移除 'in' 类（控制旋转）
-            $shareWrap.toggleClass('in'); // 给菜单容器添加/移除 'in' 类（控制显示）
-        });
-
-        // 点击页面其他地方关闭分享菜单（提升体验）
-        $(document).on('click', function(e) {
-            if ($shareWrap.hasClass('in') && !$(e.target).closest('.page-share-wrap').length && !$(e.target).closest('#shareFab').length) {
-                $shareFab.removeClass('in');
-                $shareWrap.removeClass('in');
-            }
-        });
+        var $pageShare = $('#pageShare');  // 修改选择器
+        
+        if ($shareFab.length && $pageShare.length) {
+            // 点击分享按钮切换显示状态
+            $shareFab.on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $pageShare.toggleClass('in');
+            });
+            
+            // 点击页面其他地方关闭分享菜单
+            $(document).on('click', function(e) {
+                if ($pageShare.hasClass('in') && 
+                    !$(e.target).closest('#pageShare').length && 
+                    !$(e.target).closest('#shareFab').length) {
+                    $pageShare.removeClass('in');
+                }
+            });
+            
+            // 微信分享功能
+            $('.wxFab').on('click', function(e) {
+                e.preventDefault();
+                $('#wxShare').addClass('in');
+                $('.page-modal').addClass('in');
+            });
+            
+            // 关闭微信分享弹窗
+            $('#wxShare .close').on('click', function(e) {
+                e.preventDefault();
+                $('#wxShare').removeClass('in');
+                $('.page-modal').removeClass('in');
+            });
+        }
     });
 })(jQuery);

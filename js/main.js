@@ -336,40 +336,36 @@
 					const l = 0
 					const sw = ww > docW ? docW / ww : 1
 					const sh = h > inH ? inH / h : 1
-					const s = Math.min(sw, sh)
-					ww = ww * s
-					h = h * s
+					const s = sw < sh ? sw : sh
+					if (s < 1) {
+						ww = naturalW * s
+						h = naturalH * s
+					}
 					return {
 						w: ww,
 						h: h,
-						t: (docH - h) / 2 - imgRect.top,
-						l: (docW - ww) / 2 - imgRect.left + this.$img.offsetLeft
+						t: (docH - h) / 2,
+						l: (docW - ww) / 2
 					}
-				}
-				this.setImgRect = function(rect) {
-					this.$img.style.cssText = `width: ${rect.w}px; max-width: ${
-						rect.w
-					}px; height:${rect.h}px; top: ${rect.t}px; left: ${rect.l}px`
 				}
 				this.setFrom = function() {
-					this.setImgRect({
-						w: imgRect.width,
-						h: imgRect.height,
-						t: 0,
-						l: (element.offsetWidth - imgRect.width) / 2
-					})
+					this.$img.style.cssText = `width: ${imgRect.width}px; height: ${
+						imgRect.height
+					}px; left: ${imgRect.left}px; top:${imgRect.top}px;`
 				}
 				this.setTo = function() {
-					this.setImgRect(this.calcRect())
+					const rect = this.calcRect()
+					this.$img.style.cssText = `width: ${rect.w}px; height: ${rect.h}px; left: ${
+						rect.l
+					}px; top:${rect.t}px;`
 				}
 				this.addTitle = function() {
-					if (!this.title) {
-						return
+					if (this.title) {
+						this.$caption = document.createElement('div')
+						this.$caption.innerHTML = this.title
+						this.$caption.className = 'overlay-title'
+						element.appendChild(this.$caption)
 					}
-					this.$caption = d.createElement('div')
-					this.$caption.innerHTML = this.title
-					this.$caption.className = 'overlay-title'
-					element.appendChild(this.$caption)
 				}
 				this.removeTitle = function() {
 					if (this.$caption) {
@@ -532,7 +528,8 @@
 		},
 		false
 	)
-	if (w.BLOG.SHARE && !isPost) {
+	// 修复：移除 !isPost 条件，使分享功能在所有页面都能工作
+	if (w.BLOG.SHARE) {
 		Blog.share()
 	}
 	if (w.BLOG.REWARD) {
