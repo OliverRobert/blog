@@ -556,9 +556,11 @@
 		false
 	)
 	// 修复：移除 !isPost 条件，使分享功能在所有页面都能工作
-	if (w.BLOG.SHARE) {
-		Blog.share()
-	}
+document.addEventListener('DOMContentLoaded', function() {
+    if (w.BLOG.SHARE) {
+        Blog.share()
+    }
+})
 	if (w.BLOG.REWARD) {
 		Blog.reward()
 	}
