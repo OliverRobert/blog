@@ -221,28 +221,55 @@
 			const pageShare = $('#pageShare'),
 				fab = $('#shareFab'),
 				shareModal = new this.modal('#globalShare')
-			if (fab) {
-				fab.addEventListener(
-					even,
-					function() {
-						pageShare.classList.toggle('in')
-					},
-					false
-				)
-				d.addEventListener(
-					even,
-					function(e) {
-						if (!fab.contains(e.target)) {
-							pageShare.classList.remove('in')
-						}
-					},
-					false
-				)
+			
+			// 调试信息
+			if (!fab) {
+				console.warn('[分享功能] shareFab元素未找到')
+				return
 			}
+			if (!pageShare) {
+				console.warn('[分享功能] pageShare元素未找到')
+				return
+			}
+			
+			console.log('[分享功能] 初始化成功，事件类型:', even)
+			
+			// 创建切换函数
+			const toggleShare = function(e) {
+				e.preventDefault()
+				e.stopPropagation()
+				pageShare.classList.toggle('in')
+				console.log('[分享功能] 菜单状态切换，当前状态:', pageShare.classList.contains('in') ? '显示' : '隐藏')
+			}
+			
+			// 同时绑定 click 和 touchstart 事件，确保在所有设备上都能工作
+			fab.addEventListener('click', toggleShare, false)
+			fab.addEventListener('touchstart', toggleShare, false)
+			
+			// 点击其他地方关闭分享菜单
+			const closeShare = function(e) {
+				if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+					if (pageShare.classList.contains('in')) {
+						pageShare.classList.remove('in')
+						console.log('[分享功能] 点击外部区域，关闭菜单')
+					}
+				}
+			}
+			
+			d.addEventListener('click', closeShare, false)
+			d.addEventListener('touchstart', closeShare, false)
+			
+			// 微信分享功能
 			const wxModal = new this.modal('#wxShare')
 			wxModal.onHide = shareModal.hide
 			forEach.call($$('.wxFab'), function(el) {
-				el.addEventListener(even, wxModal.toggle)
+				const wxToggle = function(e) {
+					e.preventDefault()
+					e.stopPropagation()
+					wxModal.toggle()
+				}
+				el.addEventListener('click', wxToggle, false)
+				el.addEventListener('touchstart', wxToggle, false)
 			})
 		},
 		reward: function() {

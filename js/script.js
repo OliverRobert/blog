@@ -768,42 +768,5 @@ function threedee(e) {
 }
 
 
-/* 修复分享按钮点击无反应的问题 */
-(function($) {
-    $(document).ready(function() {
-        var $shareFab = $('#shareFab');
-        var $pageShare = $('#pageShare');  // 修改选择器
-        
-        if ($shareFab.length && $pageShare.length) {
-            // 点击分享按钮切换显示状态
-            $shareFab.on('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                $pageShare.toggleClass('in');
-            });
-            
-            // 点击页面其他地方关闭分享菜单
-            $(document).on('click', function(e) {
-                if ($pageShare.hasClass('in') && 
-                    !$(e.target).closest('#pageShare').length && 
-                    !$(e.target).closest('#shareFab').length) {
-                    $pageShare.removeClass('in');
-                }
-            });
-            
-            // 微信分享功能
-            $('.wxFab').on('click', function(e) {
-                e.preventDefault();
-                $('#wxShare').addClass('in');
-                $('.page-modal').addClass('in');
-            });
-            
-            // 关闭微信分享弹窗
-            $('#wxShare .close').on('click', function(e) {
-                e.preventDefault();
-                $('#wxShare').removeClass('in');
-                $('.page-modal').removeClass('in');
-            });
-        }
-    });
-})(jQuery);
+/* 注意：分享功能的事件绑定已统一在 main.js 的 Blog.share() 中处理 */
+/* 如需调试分享功能，请查看浏览器控制台的 [分享功能] 日志输出 */
