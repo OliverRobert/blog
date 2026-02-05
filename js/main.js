@@ -468,7 +468,7 @@
 		}
 	})
 	/* 页面加载第一个执行的事件 */
-w.addEventListener('DOMContentLoaded', function() {
+w.addEventListener('load', function() {
     if (isArtitalk || isPhotos) {
       main.classList.add('menuoff')
     }
