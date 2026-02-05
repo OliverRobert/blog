@@ -555,59 +555,88 @@ w.addEventListener('load', function() {
 		},
 		false
 	)
-/* 分享功能初始化 - 在 window load 后执行以避免与 Waves 特效冲突 */
-window.addEventListener('load', function() {
-    if (window.BLOG && window.BLOG.SHARE) {
-        // 延迟300ms确保Waves特效完全加载
-        setTimeout(function() {
-            var fab = document.getElementById('shareFab');
-            var pageShare = document.getElementById('pageShare');
+/* --- 最终修复方案：强制轮询绑定 (放在文件最末尾) --- */
+;(function() {
+    console.log('[Fixer] 修复脚本已启动...等待按钮出现');
+
+    var attemptCount = 0;
+    var maxAttempts = 20; // 尝试20次 (约10秒)
+
+    function forceBindShare() {
+        var fab = document.getElementById('shareFab');
+        var pageShare = document.getElementById('pageShare');
+
+        // 1. 如果找不到元素，说明还没加载好
+        if (!fab || !pageShare) {
+            return false;
+        }
+
+        // 2. 防止重复绑定
+        if (fab.getAttribute('data-bound') === 'true') {
+            return true;
+        }
+
+        console.log('[Fixer] 终于找到按钮了！开始执行强制绑定...');
+
+        // 3. 强制提升层级 (CSS 修正)
+        if (fab.parentElement) {
+            fab.parentElement.style.zIndex = '2147483647'; // 设为最大值
+            fab.parentElement.style.position = 'absolute'; 
+        }
+
+        // 4. 定义点击逻辑
+        var toggleFunc = function(e) {
+            console.log('[Fixer] 按钮被点击！');
+            // 阻止冒泡，防止被 Waves 或其他特效拦截
+            e.preventDefault(); 
+            e.stopPropagation();
             
-            console.log('[分享功能] 开始初始化');
-            console.log('[分享功能] shareFab元素:', fab);
-            console.log('[分享功能] pageShare元素:', pageShare);
-            
-            if (fab && pageShare) {
-                // 切换分享菜单的函数
-                var toggleFunc = function(e) {
-                    // 注意：不使用 stopPropagation，以兼容 Waves 特效
-                    e.preventDefault();
-                    pageShare.classList.toggle('in');
-                    var isOpen = pageShare.classList.contains('in');
-                    console.log('[分享功能] 菜单切换:', isOpen ? '打开' : '关闭');
-                };
-                
-                // 同时绑定 click 和 touchstart 事件
-                fab.addEventListener('click', toggleFunc, false);
-                fab.addEventListener('touchstart', toggleFunc, false);
-                
-                console.log('[分享功能] 事件绑定成功');
-                
-                // 点击页面其他地方关闭分享菜单
-                document.addEventListener('click', function(e) {
-                    // 检查点击是否在分享按钮或分享菜单内部
-                    if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
-                        if (pageShare.classList.contains('in')) {
-                            pageShare.classList.remove('in');
-                            console.log('[分享功能] 点击外部区域，关闭菜单');
-                        }
-                    }
-                });
-                
-                document.addEventListener('touchstart', function(e) {
-                    if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
-                        if (pageShare.classList.contains('in')) {
-                            pageShare.classList.remove('in');
-                            console.log('[分享功能] 触摸外部区域，关闭菜单');
-                        }
-                    }
-                });
+            if (pageShare.classList.contains('in')) {
+                pageShare.classList.remove('in');
             } else {
-                console.error('[分享功能] 元素未找到，初始化失败');
+                pageShare.classList.add('in');
             }
-        }, 300);
+        };
+
+        // 5. 绑定事件 (先移除可能存在的旧监听器，再添加新的)
+        var newFab = fab.cloneNode(true);
+        fab.parentNode.replaceChild(newFab, fab);
+        fab = newFab; // 更新引用
+
+        fab.addEventListener('click', toggleFunc, false);
+        fab.addEventListener('touchstart', toggleFunc, { passive: false });
+
+        // 6. 点击外部关闭菜单
+        document.addEventListener('click', function(e) {
+            var target = e.target;
+            // 简单的判断：如果点击的不是按钮，也不是菜单内部，就关闭
+            if (target !== fab && !fab.contains(target) && target !== pageShare && !pageShare.contains(target)) {
+                pageShare.classList.remove('in');
+            }
+        });
+
+        // 标记已绑定
+        fab.setAttribute('data-bound', 'true');
+        console.log('[Fixer] ✅ 事件绑定大功告成！');
+        return true;
     }
-});
+
+    // 启动轮询：每500ms检查一次
+    var timer = setInterval(function() {
+        attemptCount++;
+        var success = forceBindShare();
+        
+        if (success) {
+            clearInterval(timer); // 成功了，停止轮询
+        } else if (attemptCount >= maxAttempts) {
+            clearInterval(timer); // 超时了，停止
+            console.log('[Fixer] ⚠️ 10秒内未找到按钮，停止尝试。请检查页面是否有 shareFab ID');
+        }
+    }, 500);
+
+    // 双重保险：在 window load 时也试一次
+    window.addEventListener('load', forceBindShare);
+})();
 	if (w.BLOG.REWARD) {
 		Blog.reward()
 	}
