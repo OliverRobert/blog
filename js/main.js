@@ -476,11 +476,6 @@ w.addEventListener('load', function() {
     Blog.toc.fixed(top)
     Blog.toc.actived(top)
     Blog.page.loaded()
-    
-    // 添加分享功能初始化
-    if (w.BLOG && w.BLOG.SHARE) {
-        Blog.share()
-    }
 })
 	/* 打开邮箱时，不触发关闭页面事件 */
 	let ignoreUnload = false
@@ -560,38 +555,55 @@ w.addEventListener('load', function() {
 		},
 		false
 	)
-/* 修复：使用 window load 确保在所有特效（如 Waves）加载完毕后执行 */
+/* 分享功能初始化 - 在 window load 后执行以避免与 Waves 特效冲突 */
 window.addEventListener('load', function() {
-    // 再次检查全局开关
-    if (window.BLOG.SHARE) {
-        // 延迟 300ms 避免被 fastclick 或 waves 特效抢占事件
+    if (window.BLOG && window.BLOG.SHARE) {
+        // 延迟300ms确保Waves特效完全加载
         setTimeout(function() {
-            // 重新获取元素，防止引用丢失
             var fab = document.getElementById('shareFab');
             var pageShare = document.getElementById('pageShare');
             
-            // 简单粗暴的调试日志，按F12看控制台是否有这两行
-            console.log('[Debug] 尝试绑定分享按钮:', fab);
+            console.log('[分享功能] 开始初始化');
+            console.log('[分享功能] shareFab元素:', fab);
+            console.log('[分享功能] pageShare元素:', pageShare);
             
             if (fab && pageShare) {
-                // 强制绑定点击事件（绕过 Blog 对象封装，防止逻辑错误）
+                // 切换分享菜单的函数
                 var toggleFunc = function(e) {
+                    // 注意：不使用 stopPropagation，以兼容 Waves 特效
                     e.preventDefault();
-                    e.stopPropagation(); // 阻止冒泡
                     pageShare.classList.toggle('in');
-                    console.log('[Debug] 分享按钮被点击!');
+                    var isOpen = pageShare.classList.contains('in');
+                    console.log('[分享功能] 菜单切换:', isOpen ? '打开' : '关闭');
                 };
                 
-                // 绑定 click (电脑) 和 touchstart (手机)
+                // 同时绑定 click 和 touchstart 事件
                 fab.addEventListener('click', toggleFunc, false);
                 fab.addEventListener('touchstart', toggleFunc, false);
                 
-                // 绑定点击外部关闭菜单
+                console.log('[分享功能] 事件绑定成功');
+                
+                // 点击页面其他地方关闭分享菜单
                 document.addEventListener('click', function(e) {
+                    // 检查点击是否在分享按钮或分享菜单内部
                     if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
-                        pageShare.classList.remove('in');
+                        if (pageShare.classList.contains('in')) {
+                            pageShare.classList.remove('in');
+                            console.log('[分享功能] 点击外部区域，关闭菜单');
+                        }
                     }
                 });
+                
+                document.addEventListener('touchstart', function(e) {
+                    if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+                        if (pageShare.classList.contains('in')) {
+                            pageShare.classList.remove('in');
+                            console.log('[分享功能] 触摸外部区域，关闭菜单');
+                        }
+                    }
+                });
+            } else {
+                console.error('[分享功能] 元素未找到，初始化失败');
             }
         }, 300);
     }
