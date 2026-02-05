@@ -468,15 +468,20 @@
 		}
 	})
 	/* 页面加载第一个执行的事件 */
-	w.addEventListener('DOMContentLoaded', function() {
+w.addEventListener('DOMContentLoaded', function() {
     if (isArtitalk || isPhotos) {
       main.classList.add('menuoff')
     }
-		const top = docEl.scrollTop
-		Blog.toc.fixed(top)
-		Blog.toc.actived(top)
-		Blog.page.loaded()
-	})
+    const top = docEl.scrollTop
+    Blog.toc.fixed(top)
+    Blog.toc.actived(top)
+    Blog.page.loaded()
+    
+    // 添加分享功能初始化
+    if (w.BLOG && w.BLOG.SHARE) {
+        Blog.share()
+    }
+})
 	/* 打开邮箱时，不触发关闭页面事件 */
 	let ignoreUnload = false
 	const $mailTarget = $('a[href^="mailto"]')
@@ -555,12 +560,42 @@
 		},
 		false
 	)
-	// 修复：移除 !isPost 条件，使分享功能在所有页面都能工作
-document.addEventListener('DOMContentLoaded', function() {
-    if (w.BLOG.SHARE) {
-        Blog.share()
+/* 修复：使用 window load 确保在所有特效（如 Waves）加载完毕后执行 */
+window.addEventListener('load', function() {
+    // 再次检查全局开关
+    if (window.BLOG.SHARE) {
+        // 延迟 300ms 避免被 fastclick 或 waves 特效抢占事件
+        setTimeout(function() {
+            // 重新获取元素，防止引用丢失
+            var fab = document.getElementById('shareFab');
+            var pageShare = document.getElementById('pageShare');
+            
+            // 简单粗暴的调试日志，按F12看控制台是否有这两行
+            console.log('[Debug] 尝试绑定分享按钮:', fab);
+            
+            if (fab && pageShare) {
+                // 强制绑定点击事件（绕过 Blog 对象封装，防止逻辑错误）
+                var toggleFunc = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // 阻止冒泡
+                    pageShare.classList.toggle('in');
+                    console.log('[Debug] 分享按钮被点击!');
+                };
+                
+                // 绑定 click (电脑) 和 touchstart (手机)
+                fab.addEventListener('click', toggleFunc, false);
+                fab.addEventListener('touchstart', toggleFunc, false);
+                
+                // 绑定点击外部关闭菜单
+                document.addEventListener('click', function(e) {
+                    if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+                        pageShare.classList.remove('in');
+                    }
+                });
+            }
+        }, 300);
     }
-})
+});
 	if (w.BLOG.REWARD) {
 		Blog.reward()
 	}
