@@ -555,88 +555,42 @@ w.addEventListener('load', function() {
 		},
 		false
 	)
-/* --- 最终修复方案：强制轮询绑定 (放在文件最末尾) --- */
-;(function() {
-    console.log('[Fixer] 修复脚本已启动...等待按钮出现');
-
-    var attemptCount = 0;
-    var maxAttempts = 20; // 尝试20次 (约10秒)
-
-    function forceBindShare() {
-        var fab = document.getElementById('shareFab');
-        var pageShare = document.getElementById('pageShare');
-
-        // 1. 如果找不到元素，说明还没加载好
-        if (!fab || !pageShare) {
-            return false;
-        }
-
-        // 2. 防止重复绑定
-        if (fab.getAttribute('data-bound') === 'true') {
-            return true;
-        }
-
-        console.log('[Fixer] 终于找到按钮了！开始执行强制绑定...');
-
-        // 3. 强制提升层级 (CSS 修正)
-        if (fab.parentElement) {
-            fab.parentElement.style.zIndex = '2147483647'; // 设为最大值
-            fab.parentElement.style.position = 'absolute'; 
-        }
-
-        // 4. 定义点击逻辑
-        var toggleFunc = function(e) {
-            console.log('[Fixer] 按钮被点击！');
-            // 阻止冒泡，防止被 Waves 或其他特效拦截
-            e.preventDefault(); 
-            e.stopPropagation();
+/* 修复：使用 window load 确保在所有特效（如 Waves）加载完毕后执行 */
+window.addEventListener('load', function() {
+    // 再次检查全局开关
+    if (window.BLOG.SHARE) {
+        // 延迟 300ms 避免被 fastclick 或 waves 特效抢占事件
+        setTimeout(function() {
+            // 重新获取元素，防止引用丢失
+            var fab = document.getElementById('shareFab');
+            var pageShare = document.getElementById('pageShare');
             
-            if (pageShare.classList.contains('in')) {
-                pageShare.classList.remove('in');
-            } else {
-                pageShare.classList.add('in');
+            // 简单粗暴的调试日志，按F12看控制台是否有这两行
+            console.log('[Debug] 尝试绑定分享按钮:', fab);
+            
+            if (fab && pageShare) {
+                // 强制绑定点击事件（绕过 Blog 对象封装，防止逻辑错误）
+                var toggleFunc = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation(); // 阻止冒泡
+                    pageShare.classList.toggle('in');
+                    console.log('[Debug] 分享按钮被点击!');
+                };
+                
+                // 绑定 click (电脑) 和 touchstart (手机)
+                fab.addEventListener('click', toggleFunc, false);
+                fab.addEventListener('touchstart', toggleFunc, false);
+                
+                // 绑定点击外部关闭菜单
+                document.addEventListener('click', function(e) {
+                    if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+                        pageShare.classList.remove('in');
+                    }
+                });
             }
-        };
-
-        // 5. 绑定事件 (先移除可能存在的旧监听器，再添加新的)
-        var newFab = fab.cloneNode(true);
-        fab.parentNode.replaceChild(newFab, fab);
-        fab = newFab; // 更新引用
-
-        fab.addEventListener('click', toggleFunc, false);
-        fab.addEventListener('touchstart', toggleFunc, { passive: false });
-
-        // 6. 点击外部关闭菜单
-        document.addEventListener('click', function(e) {
-            var target = e.target;
-            // 简单的判断：如果点击的不是按钮，也不是菜单内部，就关闭
-            if (target !== fab && !fab.contains(target) && target !== pageShare && !pageShare.contains(target)) {
-                pageShare.classList.remove('in');
-            }
-        });
-
-        // 标记已绑定
-        fab.setAttribute('data-bound', 'true');
-        console.log('[Fixer] ✅ 事件绑定大功告成！');
-        return true;
+        }, 300);
     }
-
-    // 启动轮询：每500ms检查一次
-    var timer = setInterval(function() {
-        attemptCount++;
-        var success = forceBindShare();
-        
-        if (success) {
-            clearInterval(timer); // 成功了，停止轮询
-        } else if (attemptCount >= maxAttempts) {
-            clearInterval(timer); // 超时了，停止
-            console.log('[Fixer] ⚠️ 10秒内未找到按钮，停止尝试。请检查页面是否有 shareFab ID');
-        }
-    }, 500);
-
-    // 双重保险：在 window load 时也试一次
-    window.addEventListener('load', forceBindShare);
-})();
+});
 	if (w.BLOG.REWARD) {
 		Blog.reward()
 	}

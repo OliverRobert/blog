@@ -395,5 +395,75 @@ if (window.console && window.console.log) {
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+<script>
+(function() {
+    // 1. 定义带颜色的日志，确保显眼
+    console.log('%c [System] 分享按钮修复补丁已注入页面', 'background: #222; color: #bada55');
+
+    var maxAttempts = 50; // 尝试50次 (25秒)
+    var attempt = 0;
+
+    function fixShareBtn() {
+        var fab = document.getElementById('shareFab');
+        var pageShare = document.getElementById('pageShare');
+
+        if (!fab || !pageShare) {
+            return false; // 还没加载出来
+        }
+
+        // 防止重复运行
+        if (fab.getAttribute('data-fixed') === 'true') return true;
+
+        // 2. 强制修正样式 (CSS)
+        fab.parentElement.style.zIndex = '9999999';
+        fab.parentElement.style.position = 'fixed'; // 强制固定定位
+        
+        // 3. 暴力清除旧事件 (克隆节点)
+        var newFab = fab.cloneNode(true);
+        fab.parentNode.replaceChild(newFab, fab);
+        fab = newFab; // 更新引用
+
+        console.log('%c [System] 找到按钮，正在绑定事件...', 'color: #0088ff');
+
+        // 4. 重新绑定点击事件
+        var toggleMenu = function(e) {
+            console.log('%c [System] 按钮被点击了！', 'background: red; color: white');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (pageShare.classList.contains('in')) {
+                pageShare.classList.remove('in');
+            } else {
+                pageShare.classList.add('in');
+            }
+        };
+
+        // 兼容 电脑click 和 手机touchstart
+        fab.addEventListener('click', toggleMenu, false);
+        fab.addEventListener('touchstart', toggleMenu, { passive: false });
+
+        // 点击外部关闭
+        document.addEventListener('click', function(e) {
+            if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+                pageShare.classList.remove('in');
+            }
+        });
+
+        fab.setAttribute('data-fixed', 'true');
+        console.log('%c [System] ✅ 修复成功，可以点击了', 'color: green');
+        return true;
+    }
+
+    // 启动轮询：每500ms检查一次
+    var timer = setInterval(function() {
+        attempt++;
+        if (fixShareBtn() || attempt > maxAttempts) {
+            clearInterval(timer);
+        }
+    }, 500);
+})();
+</script>
+
 </body>
 </html>
