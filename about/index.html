@@ -419,48 +419,41 @@ if (window.console && window.console.log) {
 
 <script>
 (function() {
-    // 1. 定义带颜色的日志，确保显眼
-    console.log('%c [System] 分享按钮修复补丁已注入页面', 'background: #222; color: #bada55');
+    console.log('%c [分享修复] 补丁脚本开始执行', 'background: #222; color: #bada55');
 
-    var maxAttempts = 50; // 尝试50次 (25秒)
+    var maxAttempts = 50;
     var attempt = 0;
+    var shareFixed = false;
+    var wxFixed = false;
 
+    // 修复分享按钮
     function fixShareBtn() {
         var fab = document.getElementById('shareFab');
         var pageShare = document.getElementById('pageShare');
 
         if (!fab || !pageShare) {
-            return false; // 还没加载出来
+            return false;
         }
 
-        // 防止重复运行
-        if (fab.getAttribute('data-fixed') === 'true') return true;
+        if (fab.getAttribute('data-fixed') === 'true') {
+            return true;
+        }
 
-        // 2. 强制修正样式 (CSS)
-        fab.parentElement.style.zIndex = '9999999';
-        fab.parentElement.style.position = 'fixed'; // 强制固定定位
-        
-        // 3. 暴力清除旧事件 (克隆节点)
+        // 克隆节点清除旧事件
         var newFab = fab.cloneNode(true);
         fab.parentNode.replaceChild(newFab, fab);
-        fab = newFab; // 更新引用
+        fab = newFab;
 
-        console.log('%c [System] 找到按钮，正在绑定事件...', 'color: #0088ff');
+        console.log('%c [分享修复] 绑定分享按钮事件', 'color: #0088ff');
 
-        // 4. 重新绑定点击事件
         var toggleMenu = function(e) {
-            console.log('%c [System] 按钮被点击了！', 'background: red; color: white');
+            console.log('%c [分享修复] 分享按钮被点击', 'background: green; color: white');
             e.preventDefault();
             e.stopPropagation();
             
-            if (pageShare.classList.contains('in')) {
-                pageShare.classList.remove('in');
-            } else {
-                pageShare.classList.add('in');
-            }
+            pageShare.classList.toggle('in');
         };
 
-        // 兼容 电脑click 和 手机touchstart
         fab.addEventListener('click', toggleMenu, false);
         fab.addEventListener('touchstart', toggleMenu, { passive: false });
 
@@ -472,15 +465,122 @@ if (window.console && window.console.log) {
         });
 
         fab.setAttribute('data-fixed', 'true');
-        console.log('%c [System] ✅ 修复成功，可以点击了', 'color: green');
+        console.log('%c [分享修复] ✅ 分享按钮修复成功', 'color: green');
         return true;
     }
 
-    // 启动轮询：每500ms检查一次
+    // 修复微信分享按钮 - 关键新增!
+    function fixWxShareBtn() {
+        var wxModal = document.getElementById('wxShare');
+        var wxBtns = document.querySelectorAll('.wxFab');
+
+        if (!wxModal || wxBtns.length === 0) {
+            return false;
+        }
+
+        // 检查是否已修复
+        if (wxBtns[0].getAttribute('data-wx-fixed') === 'true') {
+            return true;
+        }
+
+        console.log('%c [分享修复] 找到 ' + wxBtns.length + ' 个微信分享按钮', 'color: #0088ff');
+
+        // 为每个微信分享按钮绑定事件
+        wxBtns.forEach(function(wxBtn, index) {
+            // 克隆节点清除旧事件
+            var newWxBtn = wxBtn.cloneNode(true);
+            wxBtn.parentNode.replaceChild(newWxBtn, wxBtn);
+            
+            var toggleWxModal = function(e) {
+                console.log('%c [分享修复] 微信分享按钮被点击!', 'background: red; color: white');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // 切换微信弹窗显示/隐藏
+                if (wxModal.classList.contains('in')) {
+                    wxModal.classList.remove('in');
+                    wxModal.classList.remove('ready');
+                    // 移除遮罩
+                    var mask = document.getElementById('mask');
+                    if (mask) {
+                        mask.classList.remove('in');
+                    }
+                } else {
+                    wxModal.classList.add('ready');
+                    setTimeout(function() {
+                        wxModal.classList.add('in');
+                    }, 0);
+                    // 添加遮罩
+                    var mask = document.getElementById('mask');
+                    if (mask) {
+                        mask.classList.add('in');
+                    }
+                }
+            };
+
+            newWxBtn.addEventListener('click', toggleWxModal, false);
+            newWxBtn.addEventListener('touchstart', toggleWxModal, { passive: false });
+            newWxBtn.setAttribute('data-wx-fixed', 'true');
+            
+            console.log('%c [分享修复] 微信按钮 #' + index + ' 绑定完成', 'color: #0088ff');
+        });
+
+        // 绑定关闭按钮
+        var closeBtn = wxModal.querySelector('.close');
+        if (closeBtn && !closeBtn.getAttribute('data-close-fixed')) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                wxModal.classList.remove('in');
+                setTimeout(function() {
+                    wxModal.classList.remove('ready');
+                }, 300);
+                var mask = document.getElementById('mask');
+                if (mask) {
+                    mask.classList.remove('in');
+                }
+            });
+            closeBtn.setAttribute('data-close-fixed', 'true');
+        }
+
+        // 点击遮罩关闭
+        var mask = document.getElementById('mask');
+        if (mask && !mask.getAttribute('data-wx-mask-fixed')) {
+            mask.addEventListener('click', function() {
+                if (wxModal.classList.contains('in')) {
+                    wxModal.classList.remove('in');
+                    setTimeout(function() {
+                        wxModal.classList.remove('ready');
+                    }, 300);
+                    mask.classList.remove('in');
+                }
+            });
+            mask.setAttribute('data-wx-mask-fixed', 'true');
+        }
+
+        console.log('%c [分享修复] ✅ 微信分享修复成功', 'color: green');
+        return true;
+    }
+
+    // 轮询检查并修复
     var timer = setInterval(function() {
         attempt++;
-        if (fixShareBtn() || attempt > maxAttempts) {
+        
+        if (!shareFixed) {
+            shareFixed = fixShareBtn();
+        }
+        
+        if (!wxFixed) {
+            wxFixed = fixWxShareBtn();
+        }
+        
+        // 两个都修复成功或超过最大尝试次数
+        if ((shareFixed && wxFixed) || attempt > maxAttempts) {
             clearInterval(timer);
+            if (shareFixed && wxFixed) {
+                console.log('%c [分享修复] 🎉 所有分享功能修复完成!', 'background: green; color: white; font-size: 14px; padding: 5px;');
+            } else {
+                console.warn('[分享修复] 修复超时 - 分享按钮:' + shareFixed + ', 微信按钮:' + wxFixed);
+            }
         }
     }, 500);
 })();

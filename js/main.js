@@ -218,40 +218,33 @@
 			}
 		},
 		share: function() {
-			const pageShare = $('#pageShare'),
-				fab = $('#shareFab'),
-				shareModal = new this.modal('#globalShare')
+			const pageShare = $('#pageShare')
+			const fab = $('#shareFab')
 			
-			// 调试信息
-			if (!fab) {
-				console.warn('[分享功能] shareFab元素未找到')
-				return
-			}
-			if (!pageShare) {
-				console.warn('[分享功能] pageShare元素未找到')
+			if (!fab || !pageShare) {
+				console.warn('[分享功能] 分享元素未找到')
 				return
 			}
 			
-			console.log('[分享功能] 初始化成功，事件类型:', even)
+			console.log('[分享功能] 初始化开始')
 			
-			// 创建切换函数
+			// 分享菜单切换
 			const toggleShare = function(e) {
 				e.preventDefault()
 				e.stopPropagation()
 				pageShare.classList.toggle('in')
-				console.log('[分享功能] 菜单状态切换，当前状态:', pageShare.classList.contains('in') ? '显示' : '隐藏')
+				console.log('[分享功能] 菜单切换:', pageShare.classList.contains('in') ? '显示' : '隐藏')
 			}
 			
-			// 同时绑定 click 和 touchstart 事件，确保在所有设备上都能工作
+			// 绑定分享按钮事件
 			fab.addEventListener('click', toggleShare, false)
 			fab.addEventListener('touchstart', toggleShare, false)
 			
-			// 点击其他地方关闭分享菜单
+			// 点击外部关闭分享菜单
 			const closeShare = function(e) {
 				if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
 					if (pageShare.classList.contains('in')) {
 						pageShare.classList.remove('in')
-						console.log('[分享功能] 点击外部区域，关闭菜单')
 					}
 				}
 			}
@@ -259,18 +252,26 @@
 			d.addEventListener('click', closeShare, false)
 			d.addEventListener('touchstart', closeShare, false)
 			
-			// 微信分享功能
+			// 微信分享弹窗
 			const wxModal = new this.modal('#wxShare')
-			wxModal.onHide = shareModal.hide
+			
+			// 修复：为每个微信分享按钮绑定事件
 			forEach.call($$('.wxFab'), function(el) {
+				console.log('[分享功能] 找到微信分享按钮:', el)
+				
 				const wxToggle = function(e) {
 					e.preventDefault()
 					e.stopPropagation()
+					console.log('[分享功能] 微信分享按钮被点击')
 					wxModal.toggle()
 				}
+				
+				// 同时绑定 click 和 touchstart
 				el.addEventListener('click', wxToggle, false)
 				el.addEventListener('touchstart', wxToggle, false)
 			})
+			
+			console.log('[分享功能] 初始化完成')
 		},
 		reward: function() {
 			const modal = new this.modal('#reward')
@@ -327,115 +328,122 @@
 			el.parentNode.parentNode.classList.toggle('expand')
 		},
 		page: (function() {
-			const $elements = $$('.fade, .fade-scale')
-			let visible = false
+			const tpl = $('script[data-tpl="page"]')
+			if (!tpl) {
+				return {
+					loaded: noop,
+					unload: noop
+				}
+			}
+			const div = d.createElement('div')
+			div.innerHTML = tpl.text
+			tpl.parentNode.removeChild(tpl)
 			return {
 				loaded: function() {
-					forEach.call($elements, function(el) {
-						el.classList.add('in')
+					this.visible = true
+					forEach.call(div.querySelectorAll('.page-load .tofade'), function(el) {
+						el.classList.remove('tofade')
 					})
-					visible = true
 				},
 				unload: function() {
-					forEach.call($elements, function(el) {
-						el.classList.remove('in')
-					})
-					visible = false
-				},
-				visible: visible
+					this.visible = false
+				}
 			}
 		}()),
 		lightbox: (function() {
-			function LightBox(element) {
-				this.$img = element.querySelector('img')
-				this.$overlay = element.querySelector('overlay')
-				this.margin = 40
-				this.title = this.$img.title || this.$img.alt || ''
-				this.isZoom = false
-				let naturalW, naturalH, imgRect, docW, docH
-				this.calcRect = function() {
-					docW = body.clientWidth
-					docH = body.clientHeight
-					const inH = docH - this.margin * 2
-					let ww = naturalW
-					let h = naturalH
-					const t = this.margin
-					const l = 0
-					const sw = ww > docW ? docW / ww : 1
-					const sh = h > inH ? inH / h : 1
-					const s = sw < sh ? sw : sh
-					if (s < 1) {
-						ww = naturalW * s
-						h = naturalH * s
-					}
-					return {
-						w: ww,
-						h: h,
-						t: (docH - h) / 2,
-						l: (docW - ww) / 2
-					}
-				}
-				this.setFrom = function() {
-					this.$img.style.cssText = `width: ${imgRect.width}px; height: ${
-						imgRect.height
-					}px; left: ${imgRect.left}px; top:${imgRect.top}px;`
-				}
-				this.setTo = function() {
-					const rect = this.calcRect()
-					this.$img.style.cssText = `width: ${rect.w}px; height: ${rect.h}px; left: ${
-						rect.l
-					}px; top:${rect.t}px;`
-				}
-				this.addTitle = function() {
-					if (this.title) {
-						this.$caption = document.createElement('div')
-						this.$caption.innerHTML = this.title
-						this.$caption.className = 'overlay-title'
-						element.appendChild(this.$caption)
-					}
-				}
-				this.removeTitle = function() {
-					if (this.$caption) {
-						element.removeChild(this.$caption)
-					}
-				}
+			function LightBox(el) {
+				this.el = el
+				const cpImg = d.createElement('img')
 				const mythis = this
-				this.zoomIn = function() {
-					naturalW = this.$img.naturalWidth || this.$img.width
-					naturalH = this.$img.naturalHeight || this.$img.height
-					imgRect = this.$img.getBoundingClientRect()
-					element.style.height = `${imgRect.height}px`
-					element.classList.add('ready')
-					this.setFrom()
-					this.addTitle()
-					this.$img.classList.add('zoom-in')
-					setTimeout(function() {
-						element.classList.add('active')
-						mythis.setTo()
-						mythis.isZoom = true
-					}, 0)
+				this.img = this.el.querySelector('img')
+				this.src = this.img.getAttribute('data-src')
+				cpImg.src = this.src
+				this.w = cpImg.width
+				this.h = cpImg.height
+				this.isZoom = false
+				if (!this.w || !this.h) {
+					cpImg.onload = function() {
+						mythis.w = cpImg.width
+						mythis.h = cpImg.height
+					}
 				}
-				this.zoomOut = function() {
-					this.isZoom = false
-					element.classList.remove('active')
-					this.$img.classList.add('zoom-in')
-					this.setFrom()
-					setTimeout(function() {
-						mythis.$img.classList.remove('zoom-in')
-						mythis.$img.style.cssText = ''
-						mythis.removeTitle()
-						element.classList.remove('ready')
-						element.removeAttribute('style')
-					}, 300)
-				}
-				element.addEventListener('click', function(e) {
+				this.el.addEventListener(even, function(e) {
 					if (mythis.isZoom) {
 						mythis.zoomOut()
-					} else if (e.target.tagName === 'IMG') {
+					} else {
 						mythis.zoomIn()
 					}
+					e.preventDefault()
 				})
-				d.addEventListener('scroll', function() {
+			}
+			LightBox.prototype = {
+				zoomIn: function() {
+					const mythis = this,
+						img = this.img,
+						winW = w.innerWidth,
+						winH = w.innerHeight,
+						scaleW = Math.max(winW / this.w, 1),
+						scaleH = Math.max(winH / this.h, 1),
+						scale = Math.min(scaleW, scaleH),
+						pW = this.w * scale,
+						pH = this.h * scale,
+						imgW = img.width,
+						imgH = img.height,
+						oW = (winW - pW) / 2,
+						oH = (winH - pH) / 2,
+						offset = this.el.getBoundingClientRect(),
+						offsetX = offset.left,
+						offsetY = offset.top,
+						middleX = imgW / 2 + offsetX,
+						middleY = imgH / 2 + offsetY
+					this.isZoom = true
+					img.style.cssText = `
+						width: ${pW}px;
+						height: ${pH}px;
+						transform: translate3d(${oW - offsetX}px, ${oH - offsetY}px, 0);
+					`
+					this.el.classList.add('zoom')
+					if (body.clientHeight <= winH) {
+						body.classList.add('fix')
+					}
+					const div = d.createElement('div')
+					div.className = 'imgShow'
+					div.style.cssText = `
+						width: ${winW}px;
+						height: ${winH}px;
+					`
+					div.addEventListener(even, function() {
+						mythis.zoomOut()
+					})
+					body.appendChild(div)
+				},
+				zoomOut: function() {
+					this.isZoom = false
+					this.img.style.cssText = ''
+					this.el.classList.remove('zoom')
+					body.classList.remove('fix')
+					const div = d.querySelector('.imgShow')
+					if (div) {
+						body.removeChild(div)
+					}
+				}
+			}
+			if (isPost) {
+				const page = $('#post-content')
+				const imgs = page.querySelectorAll('img:not(.avatar)')
+				forEach.call(imgs, function(el) {
+					const src = el.getAttribute('src')
+					if (!src) {
+						return
+					}
+					el.setAttribute('data-src', src)
+					const a = d.createElement('a')
+					a.className = 'img-lightbox'
+					a.setAttribute('data-lightbox', 'example-1')
+					a.appendChild(el.cloneNode(true))
+					el.parentNode.replaceChild(a, el)
+				})
+				w.addEventListener('scroll', function() {
 					if (mythis.isZoom) {
 						mythis.zoomOut()
 					}
@@ -477,7 +485,7 @@ w.addEventListener('load', function() {
     Blog.toc.actived(top)
     Blog.page.loaded()
 })
-	/* 打开邮箱时，不触发关闭页面事件 */
+	/* 打开邮箱时,不触发关闭页面事件 */
 	let ignoreUnload = false
 	const $mailTarget = $('a[href^="mailto"]')
 	if ($mailTarget) {
@@ -499,7 +507,7 @@ w.addEventListener('load', function() {
 			Blog.page.loaded()
 		}
 	})
-	/* 调整窗口大小时，自动 */
+	/* 调整窗口大小时,自动 */
 	w.addEventListener('resize', function() {
 		even = 'ontouchstart' in w ? 'touchstart' : 'click'
 		w.BLOG.even = even
@@ -555,42 +563,10 @@ w.addEventListener('load', function() {
 		},
 		false
 	)
-/* 修复：使用 window load 确保在所有特效（如 Waves）加载完毕后执行 */
-window.addEventListener('load', function() {
-    // 再次检查全局开关
-    if (window.BLOG.SHARE) {
-        // 延迟 300ms 避免被 fastclick 或 waves 特效抢占事件
-        setTimeout(function() {
-            // 重新获取元素，防止引用丢失
-            var fab = document.getElementById('shareFab');
-            var pageShare = document.getElementById('pageShare');
-            
-            // 简单粗暴的调试日志，按F12看控制台是否有这两行
-            console.log('[Debug] 尝试绑定分享按钮:', fab);
-            
-            if (fab && pageShare) {
-                // 强制绑定点击事件（绕过 Blog 对象封装，防止逻辑错误）
-                var toggleFunc = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation(); // 阻止冒泡
-                    pageShare.classList.toggle('in');
-                    console.log('[Debug] 分享按钮被点击!');
-                };
-                
-                // 绑定 click (电脑) 和 touchstart (手机)
-                fab.addEventListener('click', toggleFunc, false);
-                fab.addEventListener('touchstart', toggleFunc, false);
-                
-                // 绑定点击外部关闭菜单
-                document.addEventListener('click', function(e) {
-                    if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
-                        pageShare.classList.remove('in');
-                    }
-                });
-            }
-        }, 300);
-    }
-});
+	
+	if (w.BLOG.SHARE) {
+		Blog.share()
+	}
 	if (w.BLOG.REWARD) {
 		Blog.reward()
 	}
@@ -611,6 +587,14 @@ window.addEventListener('load', function() {
 		])
 	} else {
 		console.error('Waves loading failed.')
+	}
+	
+	/* 关键修复：在 Waves 初始化完成后再绑定分享功能 */
+	/* 延迟执行避免被 Waves 特效覆盖事件 */
+	if (w.BLOG.SHARE) {
+		setTimeout(function() {
+			Blog.share()
+		}, 100)
 	}
 }(window, document))
 
