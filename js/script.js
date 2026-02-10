@@ -624,6 +624,7 @@ function getHitokoto() {
 		type: 'GET',
 		url: 'https://v1.hitokoto.cn/',
 		dataType: 'json',
+                cache: false,
 		timeout: 4000,
 		success: function(data) {
 			// 检查一言长度,只接受13个字符以内的
@@ -672,48 +673,46 @@ function getHitokoto() {
 	})
 }
 
-/* 粘贴提示 */
-const G = function(a, b, c) {
-	function d(aa, bb) {
-		return [
-			'',
-			'',
-			`作者:${bb}`,
-			`链接:${aa}`,
-			'著作权归作者所有。商业转载请联系作者获得授权,非商业转载请注明出处。'
-		]
-	}
+/* 粘贴提示 - 优化版 */
+// 初始化版权追加功能
+function initCopyright(selector, link, author) {
+    $(selector).on('copy', function(e) {
+        // 获取选中的文本
+        const selection = window.getSelection ? window.getSelection() : document.selection;
+        const selectedText = selection.toString();
 
-	function f(bc, cc, m) {
-		return `<div>${d(bc, cc).join('<br />')}${m}</div>`
-	}
+        // 【设置】只有复制字数超过 42 字时才触发（避免复制短标题时也带小尾巴）
+        if (selectedText.length > 42) {
+            e.preventDefault(); // 阻止默认复制行为
+            
+            // 构建版权信息
+            const copyrightText = [
+                '', '', // 增加空行
+                `作者: ${author}`,
+                `链接: ${link}`,
+                '著作权归作者所有。商业转载请联系作者获得授权,非商业转载请注明出处。'
+            ].join('\n');
 
-	function g(av) {
-		if (!window.getSelection) {
-			return
-		}
-		const m = window.getSelection().toString()
-		if (typeof av.originalEvent.clipboardData === 'object') {
-			if (m.length > 42) {
-				av.originalEvent.clipboardData.setData('text/html', f(b, c))
-				av.originalEvent.clipboardData.setData(
-					'text/plain',
-					m + d(b, c).join('\n')
-				)
-				av.preventDefault()
-			}
-			return
-		}
-		const n = $(f(b, c, m))
-			.css({
-				position: 'fixed',
-				left: '-9999px'
-			})
-			.appendTo('body')
-		window.getSelection().selectAllChildren(n[0])
-	}
-	a.on('copy', g)
+            const copyrightHtml = `<div><br><br>作者: ${author}<br>链接: ${link}<br>著作权归作者所有。商业转载请联系作者获得授权,非商业转载请注明出处。</div>`;
+
+            // 写入剪切板
+            if (e.originalEvent.clipboardData) {
+                e.originalEvent.clipboardData.setData('text/plain', selectedText + copyrightText);
+                e.originalEvent.clipboardData.setData('text/html', selectedText + copyrightHtml);
+            } else {
+                // 兼容旧版浏览器
+                const tempDiv = $('<div>')
+                    .html(selectedText + copyrightHtml)
+                    .css({ position: 'absolute', left: '-9999px' })
+                    .appendTo('body');
+                selection.selectAllChildren(tempDiv[0]);
+                document.execCommand('copy');
+                tempDiv.remove();
+            }
+        }
+    });
 }
+
 
 /* 文章块的淡出 */
 function postshow() {
@@ -778,9 +777,7 @@ function threedee(e) {
 
 /* 初始化粘贴提示功能 */
 $(document).ready(function() {
-	if (typeof G === 'function') {
-		// 参数说明: G(选择器, 文章链接, 作者名)
-		// 你可以根据需要修改作者名
-		G($('body'), window.location.href, 'Oliver Robert');
-	}
+    // 启用粘贴提示: (选择器, 文章链接, 作者名)
+    // 请在这里修改你的笔名
+    initCopyright('body', window.location.href, 'Oliver Robert');
 });
