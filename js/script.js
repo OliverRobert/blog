@@ -354,67 +354,59 @@ function elasticText() {
 			t.ctx = t.t.children('canvas')[0].getContext('2d')
 			if (t.c === false) {
 				t.t.mouseenter(function() {
-					t.c = `hsl(${Math.random() * 360},60%,80%)`
-					t.ctx.fillStyle = t.c
+					t.a = []
+					t.f = true
+					t.ctx.globalAlpha = 1
+					requestAnimationFrame(function() {
+						t[`x${u}`](t)
+					})
+				})
+				t.t.mouseleave(function() {
+					t.f = false
 				})
 			} else {
-				t.ctx.fillStyle = t.c
+				t.t.mouseenter(function() {
+					t.a = []
+					t.f = true
+					if (t.c !== false) {
+						t.ctx.globalAlpha = 1
+						requestAnimationFrame(function() {
+							t[`x${u}`](t)
+						})
+					}
+				})
+				t.t.mouseleave(function() {
+					t.f = false
+				})
 			}
-			t.t.mousemove(function(e) {
-				t.x =
-					e.pageX - t.t.offset().left - parseInt(t.t.css('border-left-width'))
-				t.y = e.pageY - t.t.offset().top - parseInt(t.t.css('border-top-width'))
-			})
-			t.a = []
-			t.t.mouseenter(function(e) {
-				t.f = true
-				t.x =
-					e.pageX - t.t.offset().left - parseInt(t.t.css('border-left-width'))
-				t.y = e.pageY - t.t.offset().top - parseInt(t.t.css('border-top-width'))
-				t.n1()
-			})
-			t.t.mouseleave(function() {
-				t.f = false
-			})
-			t.ctx.clearRect(0, 0, t.w, t.h)
-		},
-		n1: function() {
-			const t = this
-			if (t.u <= 0) {
-				console.warn('hover.js错误')
-				return false
-			}
-			if (t.u === 1) {
-				if (t.a.length === 0) {
-					t.x1(t)
-				}
-			} else if (t.u === 2) {
-				if (t.a.length === 0) {
-					for (let i = 0; i < t.w / 2; i++) {
-						t.a[i] = {
-							y: t.h
-						}
+			if (u === 2) {
+				t.a = []
+				for (let i = 0; i < t.w / 2 + 1; i++) {
+					t.a[i] = {
+						x: i * 2,
+						y: t.h,
+						h: t.h
 					}
 				}
-				if (!t.d) {
-					t.d = true
-					t.x2(t)
-				}
-			} else if (t.u === 3) {
-				if (t.a.length === 0) {
-					t.x3(t)
-				}
-			} else if (t.u === 4) {
-				if (t.a.length === 0) {
-					t.x4(t)
-				}
 			}
+			t.t.mousemove(function(e) {
+				if (u === 2) {
+					if (!t.d) {
+						t.d = true
+						t.x = Math.floor((e.pageX - t.t.offset().left) / 2) * 2
+						t.y = e.pageY - t.t.offset().top - t.h
+						requestAnimationFrame(function() {
+							t.x2(t)
+						})
+					}
+				}
+			})
 		},
 		x1: function(t) {
 			if (t.f) {
 				t.a.push({
-					x: t.x,
-					y: t.y,
+					x: t.w * Math.random(),
+					y: t.h * Math.random(),
 					r: 2,
 					o: 1,
 					c: t.c
@@ -619,12 +611,12 @@ function setTime(a) {
 				? `0${mydate.getSeconds()}`
 				: mydate.getSeconds()
 	if (!isNaN(day)) {
-		RunTime.innerHTML = `网站已运行：${day}天 ${myHours}小时 ${myMinutes}分 ${mySeconds}秒 `
+		RunTime.innerHTML = `网站已运行:${day}天 ${myHours}小时 ${myMinutes}分 ${mySeconds}秒 `
 	}
 	return false
 }
 
-/* 一言的调用 */
+/* 一言的调用 - 已修复:只接受13字符以内的一言 */
 let countFail = 0
 
 function getHitokoto() {
@@ -634,35 +626,48 @@ function getHitokoto() {
 		dataType: 'json',
 		timeout: 4000,
 		success: function(data) {
-			if (data.hitokoto.length > 12) {
-				countFail++
-				if (countFail > 5) {
-					elasticText({
-						id: 'yiyanmotto',
-						duration: 100,
-						effact: 'easeOut',
-						content: '生活不止眼前的苟且'
-					})
-				} else {
-					getHitokoto()
-				}
-			} else {
-				/* 签名 */
+			// 检查一言长度,只接受13个字符以内的
+			if (data.hitokoto && data.hitokoto.length <= 13) {
 				elasticText({
 					id: 'yiyanmotto',
 					duration: 100,
 					effact: 'easeOut',
 					content: data.hitokoto
 				})
+				countFail = 0 // 成功后重置失败计数
+			} else {
+				// 如果一言过长,继续尝试获取更短的
+				countFail++
+				if (countFail > 10) {
+					// 尝试10次后仍未获取到合适长度的一言,使用备用文案
+					elasticText({
+						id: 'yiyanmotto',
+						duration: 100,
+						effact: 'easeOut',
+						content: '一期一会'
+					})
+					countFail = 0
+				} else {
+					// 继续尝试获取更短的一言
+					setTimeout(getHitokoto, 500)
+				}
 			}
 		},
 		error: function() {
-			elasticText({
-				id: 'yiyanmotto',
-				duration: 100,
-				effact: 'easeOut',
-				content: '生活不止眼前的苟且'
-			})
+			countFail++
+			if (countFail > 5) {
+				// API请求失败多次,使用备用文案
+				elasticText({
+					id: 'yiyanmotto',
+					duration: 100,
+					effact: 'easeOut',
+					content: '一期一会'
+				})
+				countFail = 0
+			} else {
+				// 请求失败时重试
+				setTimeout(getHitokoto, 1000)
+			}
 		}
 	})
 }
@@ -673,9 +678,9 @@ const G = function(a, b, c) {
 		return [
 			'',
 			'',
-			`作者：${bb}`,
-			`链接：${aa}`,
-			'著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。'
+			`作者:${bb}`,
+			`链接:${aa}`,
+			'著作权归作者所有。商业转载请联系作者获得授权,非商业转载请注明出处。'
 		]
 	}
 
@@ -768,5 +773,14 @@ function threedee(e) {
 }
 
 
-/* 注意：分享功能的事件绑定已统一在 main.js 的 Blog.share() 中处理 */
-/* 如需调试分享功能，请查看浏览器控制台的 [分享功能] 日志输出 */
+/* 注意:分享功能的事件绑定已统一在 main.js 的 Blog.share() 中处理 */
+/* 如需调试分享功能,请查看浏览器控制台的 [分享功能] 日志输出 */
+
+/* 初始化粘贴提示功能 */
+$(document).ready(function() {
+	if (typeof G === 'function') {
+		// 参数说明: G(选择器, 文章链接, 作者名)
+		// 你可以根据需要修改作者名
+		G($('body'), window.location.href, 'Oliver Robert');
+	}
+});
