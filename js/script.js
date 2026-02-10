@@ -624,7 +624,6 @@ function getHitokoto() {
 		type: 'GET',
 		url: 'https://v1.hitokoto.cn/',
 		dataType: 'json',
-                cache: false,
 		timeout: 4000,
 		success: function(data) {
 			// 检查一言长度,只接受13个字符以内的
