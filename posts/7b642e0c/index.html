@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    
+    <title>ML | Oliver&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="ML">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="机器学习（ML）是人工智能（AI）的一个重要分支，旨在通过数据和算法使计算机能够自动学习和改进性能。它广泛应用于分类、预测、聚类等任务，并在多个行业中发挥着重要作用。  概述过往，我们解决问题通常都是基于规则解决问题，而在机器学习领域，则是通过模型解决。它通过计算机从大量数据中学习规则和模式做出决策和预测；这一模式同时也说明了数据集的质量决定了模型的上限。 机器学习工作流程大概分为以下几个步骤：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ML">
+<meta property="og:url" content="https://oliverrobert.github.io/posts/7b642e0c/index.html">
+<meta property="og:site_name" content="Oliver&#39;s Blog">
+<meta property="og:description" content="机器学习（ML）是人工智能（AI）的一个重要分支，旨在通过数据和算法使计算机能够自动学习和改进性能。它广泛应用于分类、预测、聚类等任务，并在多个行业中发挥着重要作用。  概述过往，我们解决问题通常都是基于规则解决问题，而在机器学习领域，则是通过模型解决。它通过计算机从大量数据中学习规则和模式做出决策和预测；这一模式同时也说明了数据集的质量决定了模型的上限。 机器学习工作流程大概分为以下几个步骤：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-04T11:29:47.370Z">
+<meta property="article:modified_time" content="2026-06-07T11:59:12.970Z">
+<meta property="article:author" content="Oliver">
+<meta property="article:tag" content="ML">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Oliver&#39;s Blog" href="https://oliverrobert.github.io/atom.xml">
+    
+    <link rel="shortcut icon" href="/blog/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/blog/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    
+            
+<meta name="generator" content="Hexo 8.1.1">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"  class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="https://oliverrobert.github.io/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/blog/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">Oliver</h5>
+          
+            <div id="yiyanmotto" class="motto">&nbsp;</div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/blog/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/photos"  >
+                    <i class="icon icon-lg icon-image"></i>
+                    <span>相册</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/about"  >
+                    <i class="icon icon-lg icon-paper-plane"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Twitter" href="https://x.com/Enyukishir0" target="_blank"title="Twitter" >
+                <i class="icon icon-lg icon-twitter twitter"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/OliverRobert" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ML</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="https://oliverrobert.github.io/atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+          <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="post-toc-number">2.</span> <span class="post-toc-text">机器学习的三种类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#1-%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%EF%BC%88Supervised-Learning%EF%BC%89"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">1. 监督学习（Supervised Learning）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#2-%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%EF%BC%88Unsupervised-Learning%EF%BC%89"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2. 无监督学习（Unsupervised Learning）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#3-%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%EF%BC%88Reinforcement-Learning%EF%BC%89"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">3. 强化学习（Reinforcement Learning）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#knn%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.</span> <span class="post-toc-text">knn算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#knn%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">knn算法简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">思路分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#knn%E5%88%86%E7%B1%BB%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">knn分类流程：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#knn%E5%9B%9E%E5%BD%92%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">knn回归流程：</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">代码实现</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="post-toc-number">4.</span> <span class="post-toc-text">线性回归</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="post-toc-number">5.</span> <span class="post-toc-text">逻辑回归</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91"><span class="post-toc-number">6.</span> <span class="post-toc-text">决策树</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ID3%E5%86%B3%E7%AD%96%E6%A0%91"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">ID3决策树</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#C4-5%E5%86%B3%E7%AD%96%E6%A0%91"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">C4.5决策树</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CART%E6%A0%91"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">CART树</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%AA%E6%9E%9D"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">剪枝</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0"><span class="post-toc-number">7.</span> <span class="post-toc-text">集成学习</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Bagging"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">Bagging</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="post-toc-number">7.1.1.</span> <span class="post-toc-text">随机森林</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Boosting"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">Boosting</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AdaBoost"><span class="post-toc-number">7.2.1.</span> <span class="post-toc-text">AdaBoost</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#GBDT"><span class="post-toc-number">7.2.2.</span> <span class="post-toc-text">GBDT</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#XGBoost"><span class="post-toc-number">7.2.3.</span> <span class="post-toc-text">XGBoost</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#XGBoost%E6%A0%B8%E5%BF%83%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC"><span class="post-toc-number">7.2.3.1.</span> <span class="post-toc-text">XGBoost核心公式推导</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%89%B9%E5%BE%81%E9%A2%84%E5%A4%84%E7%90%86"><span class="post-toc-number">8.</span> <span class="post-toc-text">特征预处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%BD%92%E4%B8%80%E5%8C%96"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">归一化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%87%E5%87%86%E5%8C%96"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">标准化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B6%85%E5%8F%82%E6%95%B0%E9%80%89%E6%8B%A9%E6%96%B9%E6%B3%95"><span class="post-toc-number">9.</span> <span class="post-toc-text">超参数选择方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BD%91%E6%A0%BC%E6%90%9C%E7%B4%A2"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">网格搜索</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98"><span class="post-toc-number">10.</span> <span class="post-toc-text">项目实战</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%B8%A2%E5%B0%BE%E8%8A%B1%E6%A1%88%E4%BE%8B-knn"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">鸢尾花案例-knn</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB-knn"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">手写数字识别-knn</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B3%A2%E5%A3%AB%E9%A1%BF%E6%88%BF%E4%BB%B7%E9%A2%84%E6%B5%8B-%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="post-toc-number">10.3.</span> <span class="post-toc-text">波士顿房价预测-线性回归</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%99%8C%E7%97%87%E9%A2%84%E6%B5%8B-%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92"><span class="post-toc-number">10.4.</span> <span class="post-toc-text">癌症预测-逻辑回归</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B3%B0%E5%9D%A6%E5%B0%BC%E5%85%8B%E5%8F%B7%E6%A1%88%E4%BE%8B-%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="post-toc-number">10.5.</span> <span class="post-toc-text">泰坦尼克号案例-随机森林</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%91%A1%E8%90%84%E9%85%92%E6%A1%88%E4%BE%8B-AdaBoost"><span class="post-toc-number">10.6.</span> <span class="post-toc-text">葡萄酒案例-AdaBoost</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%B3%B0%E5%9D%A6%E5%B0%BC%E5%85%8B%E5%8F%B7%E6%A1%88%E4%BE%8B-GBDT"><span class="post-toc-number">10.7.</span> <span class="post-toc-text">泰坦尼克号案例-GBDT</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%BA%A2%E9%85%92%E5%93%81%E8%B4%A8%E5%88%86%E7%B1%BB-XGBoost"><span class="post-toc-number">10.8.</span> <span class="post-toc-text">红酒品质分类-XGBoost</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-ML"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ML</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2026-05-04 19:29:47" datetime="2026-05-04T11:29:47.370Z"  itemprop="datePublished">2026-05-04</time>
+
+            <br id="mybreak"/>
+            
+<script>
+	mybreak.style="display:none";
+</script>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">40</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <hr>
+<p>机器学习（ML）是人工智能（AI）的一个重要分支，旨在通过数据和算法使计算机能够自动学习和改进性能。它广泛应用于分类、预测、聚类等任务，并在多个行业中发挥着重要作用。</p>
+<hr>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>过往，我们解决问题通常都是基于规则解决问题，而在机器学习领域，则是通过模型解决。它通过计算机从大量数据中学习规则和模式做出决策和预测；这一模式同时也说明了数据集的质量决定了模型的上限。</p>
+<p>机器学习工作流程大概分为以下几个步骤：</p>
+<p><strong>1. 数据收集</strong></p>
+<ul>
+<li><strong>收集数据</strong>：这是机器学习项目的第一步，涉及收集相关数据。数据可以来自数据库、文件、网络或实时数据流。</li>
+<li><strong>数据类型</strong>：可以是结构化数据（如表格数据）或非结构化数据（如文本、图像、视频）。</li>
+</ul>
+<p><strong>2. 数据预处理</strong></p>
+<ul>
+<li><strong>清洗数据</strong>：处理缺失值、异常值、错误和重复数据。</li>
+<li><strong>特征工程</strong>：选择有助于模型学习的最相关特征，可能包括创建新特征或转换现有特征。</li>
+<li><strong>数据标准化/归一化</strong>：调整数据的尺度，使其在同一范围内，有助于某些算法的性能。</li>
+</ul>
+<p><strong>3. 选择模型</strong></p>
+<ul>
+<li><strong>确定问题类型</strong>：根据问题的性质（分类、回归、聚类等）选择合适的机器学习模型。</li>
+<li><strong>选择算法</strong>：基于问题类型和数据特性，选择一个或多个算法进行实验。</li>
+</ul>
+<p><strong>4. 训练模型</strong></p>
+<ul>
+<li><strong>划分数据集</strong>：将数据分为训练集、验证集和测试集。</li>
+<li><strong>训练</strong>：使用训练集上的数据来训练模型，调整模型参数以最小化损失函数。</li>
+<li><strong>验证</strong>：使用验证集来调整模型参数，防止过拟合。</li>
+</ul>
+<p><strong>5. 评估模型</strong></p>
+<ul>
+<li><strong>性能指标</strong>：使用测试集来评估模型的性能，常用的指标包括准确率、召回率、F1分数等。</li>
+<li><strong>交叉验证</strong>：一种评估模型泛化能力的技术，通过将数据分成多个子集进行训练和验证。</li>
+</ul>
+<p><strong>6. 模型优化</strong></p>
+<ul>
+<li><strong>调整超参数</strong>：超参数是学习过程之前设置的参数，如学习率、树的深度等，可以通过网格搜索、随机搜索或贝叶斯优化等方法来调整。</li>
+<li><strong>特征选择</strong>：可能需要重新评估和选择特征，以提高模型性能。</li>
+</ul>
+<p><strong>7. 部署模型</strong></p>
+<ul>
+<li><strong>集成到应用</strong>：将训练好的模型集成到实际应用中，如网站、移动应用或软件中。</li>
+<li><strong>监控和维护</strong>：持续监控模型的性能，并根据新数据更新模型。</li>
+</ul>
+<p><strong>8. 反馈循环</strong></p>
+<ul>
+<li><strong>持续学习</strong>：机器学习模型可以设计为随着时间的推移自动从新数据中学习，以适应变化。</li>
+</ul>
+<p><strong>技术细节</strong></p>
+<ul>
+<li><strong>损失函数</strong>：一个衡量模型预测与实际结果差异的函数，模型训练的目标是最小化这个函数。</li>
+<li><strong>优化算法</strong>：如梯度下降，用于找到最小化损失函数的参数值。</li>
+<li><strong>正则化</strong>：一种技术，通过添加惩罚项来防止模型过拟合。</li>
+</ul>
+<p>机器学习的工作流程是迭代的，可能需要多次调整和优化以达到最佳性能。此外，随着数据的积累和算法的发展，机器学习模型可以变得更加精确和高效。</p>
+<h1 id="机器学习的三种类型"><a href="#机器学习的三种类型" class="headerlink" title="机器学习的三种类型"></a>机器学习的三种类型</h1><h2 id="1-监督学习（Supervised-Learning）"><a href="#1-监督学习（Supervised-Learning）" class="headerlink" title="1. 监督学习（Supervised Learning）"></a>1. <strong>监督学习（Supervised Learning）</strong></h2><ul>
+<li><p><strong>定义：</strong> 监督学习是指使用带标签的数据进行训练，模型通过学习输入数据与标签之间的关系，来做出预测或分类。</p>
+</li>
+<li><p><strong>应用：</strong> 分类（如垃圾邮件识别）、回归（如房价预测）。</p>
+</li>
+<li><p><strong>例子：</strong> 线性回归、决策树、支持向量机（SVM）。</p>
+<p>监督学习根据标签的性质分为分类和回归问题，如果标签连续，则为回归问题，如果标签不连续，则为分类问题。</p>
+</li>
+</ul>
+<h2 id="2-无监督学习（Unsupervised-Learning）"><a href="#2-无监督学习（Unsupervised-Learning）" class="headerlink" title="2. 无监督学习（Unsupervised Learning）"></a>2. <strong>无监督学习（Unsupervised Learning）</strong></h2><ul>
+<li><strong>定义：</strong> 无监督学习使用没有标签的数据，模型试图在数据中发现潜在的结构或模式。</li>
+<li><strong>应用：</strong> 聚类（如客户分群）、降维（如数据可视化）。</li>
+<li><strong>例子：</strong> K-means 聚类、主成分分析（PCA）。</li>
+</ul>
+<h2 id="3-强化学习（Reinforcement-Learning）"><a href="#3-强化学习（Reinforcement-Learning）" class="headerlink" title="3. 强化学习（Reinforcement Learning）"></a>3. <strong>强化学习（Reinforcement Learning）</strong></h2><ul>
+<li><strong>定义：</strong> 强化学习通过与环境互动，智能体在试错中学习最佳策略，以最大化长期回报。每次行动后，系统会收到奖励或惩罚，来指导行为的改进。</li>
+<li><strong>应用：</strong> 游戏AI（如AlphaGo）、自动驾驶、机器人控制。</li>
+<li><strong>例子：</strong> Q-learning、深度Q网络（DQN）。</li>
+</ul>
+<p>这三种机器学习类型各有其应用场景和优势，监督学习适用于有明确标签的数据，无监督学习适用于探索数据内在结构，而强化学习适用于需要通过试错来学习最优策略的场景。</p>
+<h1 id="knn算法"><a href="#knn算法" class="headerlink" title="knn算法"></a>knn算法</h1><h2 id="knn算法简介"><a href="#knn算法简介" class="headerlink" title="knn算法简介"></a>knn算法简介</h2><p>knn算法即我们所熟识的k-近邻算法，既能解决分类（投票）问题，也能解决回归（均值）问题。</p>
+<p><strong>knn算法思想</strong>：如果一个样本在特征空间中的k个<strong>最相似</strong>的样本中，大多数属于某一个类别，则该样本也属于这个类别。</p>
+<p>样本中的相似性我们用距离的远近进行判断，距离越近，相似度越高；距离越远，相似度越低。计算距离的方法有：欧氏距离，切比雪夫距离，闵可夫斯基距离，曼哈顿距离。我们常用<strong>欧式距离</strong>或者<strong>切比雪夫距离</strong>计算样本间的距离。</p>
+<p>例如，对于三维空间，用<strong>欧氏距离</strong>有：</p>
+<p>$$<br>d_{12}=\sqrt[2]{(x_1-x_2)^2+(y_1-y_2)^2+(z_1-z_2)^2}<br>$$<br>将维度提升至n维：<br>$$<br>d_{12}=\sqrt[2]{\sum_{k=1}^n(x_{1k}-x_{2k})^2}<br>$$<br>曼哈顿距离：二维空间<br>$$<br>d_{12}=|x_1-x_2|+|y_1-y_2|<br>$$<br>n维空间：<br>$$<br>d_{12}=\sum_{k=1}^n|x_{1k}-x_{2k}|<br>$$<br>**切比雪夫距离：**二维空间<br>$$<br>d_{12}=max(|x_1-x_2|, |y_1-y_2|)<br>$$<br>n维空间：<br>$$<br>d_{12}=max(|x_{1i}-x_{2i}|)<br>$$<br>闵可夫斯基距离：它并不是一种新的距离度量方式，而是对前面方法的总结<br>$$<br>d_{12}=\sqrt[p]{\sum_{k=1}^n|x_{1k}-x_{2k}|^p}<br>$$</p>
+<ul>
+<li>当<strong>p=2</strong>时，该公式为欧氏距离</li>
+<li>当<strong>p=1</strong>时，该公式为曼哈顿距离</li>
+<li>当**p趋于∞**时，该公式为切比雪夫距离</li>
+</ul>
+<p>knn算法常面临两个问题：k值过大或过小</p>
+<p>**k值过小：**用较小邻域中的训练实例进行预测</p>
+<ul>
+<li>容易受到异常点的影响</li>
+<li>k值的减小就意味着整体<strong>模型变得复杂</strong>，容易发生<strong>过拟合</strong></li>
+</ul>
+<p><strong>k值过大：</strong>：用较大邻域中的训练实例进行预测</p>
+<p>受到样本均衡的问题</p>
+<p>k值的增大就意味着整体模型变得简单，容易发生<strong>欠拟合</strong></p>
+<h2 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h2><h3 id="knn分类流程："><a href="#knn分类流程：" class="headerlink" title="knn分类流程："></a>knn分类流程：</h3><ol>
+<li>计算未知样本到每一个训练样本的距离</li>
+<li>将训练样本根据距离进行升序排列</li>
+<li>选出距离最近的k个训练样本</li>
+<li>进行多数表决，统计k个样本中哪个类别的样本数量最多</li>
+<li>将未知样本归属到出现次数最多的类别</li>
+</ol>
+<h3 id="knn回归流程："><a href="#knn回归流程：" class="headerlink" title="knn回归流程："></a>knn回归流程：</h3><ol>
+<li>计算未知样本到每一个训练样本的距离</li>
+<li>将训练样本根据距离进行升序排列</li>
+<li>选出距离最近的k个训练样本</li>
+<li>基于k个样本的标签值计算其<strong>平均值</strong></li>
+<li>将计算出来的<strong>平均值</strong>作为最终的预测结果</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p><strong>knn分类思路：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建训练集和测试集</span></span><br><span class="line">x_train = [[<span class="number">0</span>],[<span class="number">1</span>],[<span class="number">2</span>],[<span class="number">3</span>]]	<span class="comment">#训练集特征，因为特征有时有多个，所以用二维[[]]表示</span></span><br><span class="line">y_train = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>]	<span class="comment">#训练集标签</span></span><br><span class="line">x_test = [[<span class="number">5</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建模型对象</span></span><br><span class="line">mode = KNeighborsClassifier(n_neighbors=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#模型训练</span></span><br><span class="line">mode.fit(x_train, y_train)</span><br><span class="line"><span class="comment">#模型预测</span></span><br><span class="line">y_pred = mode.predict(x_test)</span><br><span class="line"><span class="comment">#打印结果</span></span><br><span class="line"><span class="built_in">print</span>(y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>knn回归思路：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsRegressor</span><br><span class="line"></span><br><span class="line"><span class="comment">#准备数据集</span></span><br><span class="line">x_train = [[<span class="number">2</span>,<span class="number">5</span>,<span class="number">3</span>],[<span class="number">1</span>,<span class="number">6</span>,<span class="number">7</span>],[<span class="number">5</span>,<span class="number">6</span>,<span class="number">3</span>],[<span class="number">8</span>,<span class="number">9</span>,<span class="number">7</span>]]</span><br><span class="line">y_train = [<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>,<span class="number">0.4</span>]</span><br><span class="line">x_test = [[<span class="number">4</span>,<span class="number">1</span>,<span class="number">9</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建模型对象</span></span><br><span class="line">mode = KNeighborsRegressor(n_neighbors=<span class="number">2</span>)</span><br><span class="line"><span class="comment">#模型训练</span></span><br><span class="line">mode.fit(x_train, y_train)</span><br><span class="line"><span class="comment">#模型预测</span></span><br><span class="line">y_pred = mode.predict(x_test)</span><br><span class="line"><span class="comment">#打印结果</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'预测结果为：'</span>, y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h1 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h1><p>对于成带状分布的数据，一般都具有线性关系，这时候就可以拟合一条回归线来进行预测。<br>$$<br>y=wx+b<br>$$<br>这里的w表示权重，b表示偏置，可以用最小二乘法进行求解。</p>
+<p>误差：预测值-真实值。</p>
+<p>损失函数：用来描述每个样本和预测值之间的关系（线性回归常用均方误差作损失函数）。</p>
+<p><strong>w，b求解方法：</strong></p>
+<ul>
+<li>最小二乘法</li>
+</ul>
+<p>$$<br>S=\sum_{i=0}^{m}(wx_i+b-y_i)^2<br>$$</p>
+<ul>
+<li><p>梯度下降算法</p>
+<p>大多数情况下，最小二乘法并不合适，这时便需要采取梯度下降法进行求解。a为学习率。</p>
+</li>
+</ul>
+<p>$$<br>w=w-a*(\frac{\partial j_{(w,b)}}{\partial w})<br>$$</p>
+<p>$$<br>b=b-a*(\frac{\partial j_{(w,b)}}{\partial b})<br>$$</p>
+<p>在使用均方误差作为损失函数的情况下，对w，b的梯度为(j=1,2,3….)：<br>$$<br>\frac{\partial j_{(w,b)}}{\partial w_j}=\frac{1}{m}\sum_{i=0}^{m}(wx_i+b-y_i)*x_j^i<br>$$</p>
+<p>$$<br>\frac{\partial j_{(w,b)}}{\partial b}=\frac{1}{m}\sum_{i=0}^{m}(wx_i+b-y_i)<br>$$<br>线性回归可以分为一元线性回归和多元线性回归。对于多元线性回归，上式中的下标j表示第j个权重。例如：数据中有三个特征列，相对应的就会有三个权重。<br>$$<br>y=x_1w_1+x_2w_2+x_3w_3+b<br>$$<br><strong>梯度下降算法分类：</strong></p>
+<ul>
+<li><p>全梯度下降算法(FGD/BGD)</p>
+<p>使用全部样本的梯度值。训练速度慢。</p>
+</li>
+<li><p>随机梯度下降算法(SGD)</p>
+</li>
+</ul>
+<p>随机选取一个样本的梯度值。简单，高效，遇上噪声容易陷入局部最优。</p>
+<ul>
+<li>小批量梯度下降算法(mini-batch)</li>
+</ul>
+<p>每次迭代时，随机选取小批量样本的梯度值。结合了FGD和SGD的有点，效果介于两者之间</p>
+<ul>
+<li><p>随机平均梯度下降算法(SAG)</p>
+<p>每次选取一个样本的梯度值并记录，取均值，然后更新参数。初期训练表现不佳。</p>
+</li>
+</ul>
+<p><strong>线性回归模型评估指标：</strong></p>
+<ul>
+<li>均方误差（MSE）：</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metric <span class="keyword">import</span> mean_squared_error</span><br><span class="line">mean_squared_error(y_test, y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>$$<br>MSE=\frac{1}{m}\sum_{i=0}^{m}(wx_i+b-y_i)^2<br>$$</p>
+<ul>
+<li>平均绝对误差(MAE)：</li>
+</ul>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metric <span class="keyword">import</span> mean_absolute_error</span><br><span class="line">mean_absolute_error(y_test, y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>$$<br>MAE=\frac{1}{m}\sum_{i=0}^{m}|wx_i+b-y_i|<br>$$</p>
+<ul>
+<li>均方根误差（RMSE)：</li>
+</ul>
+<p>$$<br>RMSE=\sqrt{MSE}<br>$$</p>
+<p>模型正常拟合时，<strong>RMSE&gt;MAE</strong>；如果RMSE小于MAE，说明模型对异常点也拟合的很好，这样模型就容易<strong>过拟合</strong>，所以评价指标要综合看。</p>
+<p><strong>API实例（最小二乘法）：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 准备数据集</span></span><br><span class="line">x_train = [[<span class="number">161</span>],[<span class="number">165</span>],[<span class="number">168</span>],[<span class="number">173</span>]]</span><br><span class="line">y_train = [<span class="number">56.3</span>,<span class="number">59.2</span>,<span class="number">64</span>,<span class="number">67</span>]</span><br><span class="line">x_test = [[<span class="number">178</span>]]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="comment"># 创建线性回归模型</span></span><br><span class="line">model = LinearRegression()</span><br><span class="line"><span class="comment"># 实例化模型</span></span><br><span class="line">model.fit(x_train,y_train)</span><br><span class="line"><span class="comment"># 预测</span></span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="comment"># 结果输出</span></span><br><span class="line"><span class="built_in">print</span>(y_pred)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'权重：'</span>, model.coef_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'偏置：'</span>, model.intercept_)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>最后再介绍过拟合和欠拟合，以及相对应的处理方法。</p>
+<p>**欠拟合：**模型在训练集和测试集上表现都很差（模型过于简单）。</p>
+<p>**优化方法：**增加特征列增强模型复杂度。</p>
+<p>**过拟合：**模型在训练集上表现好，在测试集上表现差（模型过于复杂）。</p>
+<p>**优化方法：**减少特征，降低模型复杂度，常用手段：L1和L2正则化。</p>
+<p>以线性回归为例，损失函数为均方误差，加入L1正则化后（<strong>Lasso回归</strong>）：<br>$$<br>L(w)=\frac{1}{m}\sum_{i=1}^m(wx_i+b-y_i)^2+\lambda||w||_1<br>$$<br>API实现：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Lasso</span><br><span class="line">model = Lasso(alpha=<span class="number">0.01</span>)	<span class="comment">#alpha为惩罚系数</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<p>L2正则化（<strong>Ridge回归</strong>）：<br>$$<br>L(w)=\frac{1}{m}\sum_{i=1}^m(wx_i+b-y_i)^2+\lambda||w||_2^2<br>$$</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge</span><br><span class="line">model = Ridge(alpha=<span class="number">0.01</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h1 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h1><p>逻辑回归是一种广泛用于二分类问题的统计学方法。虽然名称中含有‘’回归‘’二字，但是本质是<strong>分类</strong>模型。</p>
+<p><strong>核心思想：<strong>逻辑回归通过一个</strong>sigmoid函数</strong>将线性回归的输出压缩到0和1之间，解释为属于正类的概率，对于输入特征x，模型输出为：<br>$$<br>\hat{y}=\sigma(w^Tx+b)=\frac{1}{1+e^{-(w^Tx+b)}}<br>$$<br>其中σ(z)是sigmoid函数：<br>$$<br>\sigma(z)=\frac{1}{1+e^{-z}}<br>$$</p>
+<p><strong>损失函数-对数损失（交叉熵损失函数）：</strong></p>
+<p>逻辑回归不使用均方误差（会导致非凸优化问题），而是使用对数损失，也称为二元交叉熵。<br>$$<br>J(w,b)=-\frac{1}{m}\sum_{i=1}^{m}[y_i\log\hat{y}_i+(1-y_i)\log(1-\hat{y}_i)]<br>$$<br>参数w和b可以用梯度下降法进行求解。</p>
+<p><strong>API介绍：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sklearn.liner_model.LogisticRegression(solver=<span class="string">'liblinear'</span>, penalty=<span class="string">''</span>, C=)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">solver:liblinear对小数据集场景训练速度更快，sag和saga对大数据集更快</span></span><br><span class="line"><span class="string">penalty：正则化，L1，L2</span></span><br><span class="line"><span class="string">C：正则化力度</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<p><strong>逻辑回归模型评估指标：</strong></p>
+<ul>
+<li>混淆矩阵</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">预测正例</th>
+<th align="center">预测反例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">真实正例</td>
+<td align="center">真正例(TP)</td>
+<td align="center">伪反例(FN)</td>
+</tr>
+<tr>
+<td align="center">真实反例</td>
+<td align="center">伪正例(FP)</td>
+<td align="center">真反例(TN)</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>精确率（Precision）<br>$$<br>P=\frac{TP}{TP+FP}<br>$$</p>
+</li>
+<li><p>召回率(Recall)</p>
+</li>
+</ul>
+<p>$$<br>P=\frac{TP}{TP+FN}<br>$$</p>
+<ul>
+<li>F1-score</li>
+</ul>
+<p>$$<br>P=\frac{2<em>Precision</em>Recall}{Precision+Recall}<br>$$</p>
+<p>精确率描述预测的准不准；召回率描述预测的全不全。</p>
+<p><strong>实例：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">labels=[0,1]:即把0当作正例，1当作反例</span></span><br><span class="line"><span class="string">pos_label=0:把0当作正例</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line">y_true = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line">y_pred = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix,precision_score,recall_score,f1_score</span><br><span class="line">cm = confusion_matrix(y_true, y_pred, labels=[<span class="number">0</span>,<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'精确率：'</span>, precision_score(y_true, y_pred, pos_label=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'召回率：'</span>, recall_score(y_true,y_pred, pos_label=<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'f1值：'</span>, f1_score(y_true, y_pred, pos_label=<span class="number">0</span>))</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h1 id="决策树"><a href="#决策树" class="headerlink" title="决策树"></a>决策树</h1><p>决策树是一种基于树结构的监督学习算法，既可以用于分类，也可以用于回归任务。</p>
+<p>决策过程：从根节点开始，根据特征取值不断划分数据，直到每个叶子节点包含足够‘’纯净‘’的样本，然后给出预测结果（分类时取多数类，回归时取平均值）</p>
+<p>构建决策树无非就是将每一个特征当成节点，然后根据特征的取值去划分，即一个特征跳入到另一个特征的过程。这其中的关键点就在于特征的排列顺序：选哪一个特征作为根节点，根节点的下一个节点又应该选哪个特征。为了解决这个问题，引入了信息熵的概念和信息增益。</p>
+<p>**熵：**信息论中代表随机变量不确定度的度量<br>$$<br>H(X)=-\sum_{i=0}^nP(x_i)log_2P(x_i)<br>$$<br>P表示数据中类别出现的概率，H为信息熵值。</p>
+<p><strong>条件熵：</strong><br>$$<br>H(D|A)=\sum_{v=1}^n\frac{D^v}{D}H(D^v)<br>$$<br>**信息增益：**总熵-条件熵</p>
+<h2 id="ID3决策树"><a href="#ID3决策树" class="headerlink" title="ID3决策树"></a>ID3决策树</h2><p>ID3决策树选取节点的方式为：将每个特征的<strong>信息增益</strong>从大到小排序，节点从中选取。</p>
+<p>这里给出相应的计算过程，假设有如下数据集：</p>
+<table>
+<thead>
+<tr>
+<th align="center">性别（男/女）</th>
+<th align="center">活跃度（低/中/高）</th>
+<th align="center">是否流失（0/1）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">男</td>
+<td align="center">低</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">女</td>
+<td align="center">中</td>
+<td align="center">0</td>
+</tr>
+<tr>
+<td align="center">……</td>
+<td align="center">……</td>
+<td align="center">……</td>
+</tr>
+</tbody></table>
+<p>对表格中数据进行规整（数值均为假设）：</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">性别</th>
+<th align="center">活跃度</th>
+<th align="center">汇总</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">整体</td>
+<td align="center">5</td>
+<td align="center">10</td>
+<td align="center">15</td>
+</tr>
+<tr>
+<td align="center">男</td>
+<td align="center">3</td>
+<td align="center">5</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center">女</td>
+<td align="center">2</td>
+<td align="center">5</td>
+<td align="center">7</td>
+</tr>
+<tr>
+<td align="center">高</td>
+<td align="center">0</td>
+<td align="center">6</td>
+<td align="center">6</td>
+</tr>
+<tr>
+<td align="center">中</td>
+<td align="center">1</td>
+<td align="center">4</td>
+<td align="center">5</td>
+</tr>
+<tr>
+<td align="center">低</td>
+<td align="center">4</td>
+<td align="center">0</td>
+<td align="center">4</td>
+</tr>
+</tbody></table>
+<p>$$<br>总信息熵=-\frac{5}{15}log_2\frac{5}{15}+-\frac{10}{15}log_2\frac{10}{15}<br>$$</p>
+<p>$$<br>性别条件熵=\frac{8}{15}<em>(-\frac{3}{8}log_2\frac{3}{8}+-\frac{5}{8}log_2\frac{5}{8})+\frac{7}{15}</em>(-\frac{2}{7}log_2\frac{2}{7}+-\frac{5}{7}log_2\frac{5}{7})<br>$$</p>
+<p>根据计算结果，活跃度的信息增益&gt;性别的信息增益，因此活跃度这一特征将作为根节点。对活跃度特征取值进行划分后，进入到下一个节点——性别。</p>
+<p>ID3树的缺点：偏向于选取<strong>种类多的特征</strong>作为分裂依据。这样的划分缺少泛化能力，容易过拟合。</p>
+<h2 id="C4-5决策树"><a href="#C4-5决策树" class="headerlink" title="C4.5决策树"></a>C4.5决策树</h2><p>为了弥补ID3树的的缺点，引入分裂信息作为惩罚项。</p>
+<p><strong>分裂信息</strong>定义为：<br>$$<br>SplitInfo=(S,A)=-\sum_{i=1}^v\frac{|S_i|}{|S|}log_2\frac{|S_i|}{|S|}<br>$$<br><strong>增益率：</strong><br>$$<br>增益率=\frac{信息增益}{分裂信息}<br>$$</p>
+<ul>
+<li><p>如果特征取值多且分布均匀，则分裂信息大（即惩罚大）</p>
+</li>
+<li><p>如果特征取值少或某些特征占绝对多数，则分裂信息小（即惩罚小）</p>
+<p>C4.5决策树采用<strong>增益率大</strong>的特征作为节点，但这并不是直接选择：先计算所有特征的信息增益，选取高于平均增益的特征，再从中选取增益率高的特征。这样可以避免倾向于选择取值很少的特征（例如，特征取值为1时，分裂信息为0，增益率无穷大）</p>
+</li>
+</ul>
+<p>分裂信息的计算方法和信息熵的计算方法一样，只不过在计算分裂信息时，是把要计算的特征取值当成标签进行计算，以上面数据集为例，计算性别的分裂信息：<br>$$<br>性别的分裂信息=-\frac{7}{15}log_2\frac{7}{15}+-\frac{8}{15}log_2\frac{8}{15}<br>$$</p>
+<h2 id="CART树"><a href="#CART树" class="headerlink" title="CART树"></a>CART树</h2><p>与ID3和C4.5不同，CART树构建的是二叉树，既可以用于分类，也可以做回归任务</p>
+<ul>
+<li><strong>CART分类树（基尼系数）</strong></li>
+</ul>
+<p><strong>基尼系数：</strong><br>$$<br>Gini(S)=1-\sum_{k=1}^{k}p_k^2<br>$$<br><strong>分裂规则</strong>：</p>
+<p>对于特征A，若将其划分为两个子集S1和S2，则划分后的加权基尼系数为：<br>$$<br>Gini_{split}=(S,A)=\frac{|S_1|}{|S|}Gini(S_1)+\frac{|S_2|}{|S|}Gini(S_2)<br>$$<br>基尼系数越小，数据纯度越高。因此选择基尼系数小的特征作为分裂节点。</p>
+<ul>
+<li><strong>CART回归树（均方误差）</strong></li>
+</ul>
+<p>$$<br>MSE_{split}=\frac{|S_{left}|}{|S|}MSE(S_{left})+\frac{|S_{right}|}{|S|}MSE(S_{right})<br>$$</p>
+<p>CART回归树选择MSE最小的特征和切分点。</p>
+<h2 id="剪枝"><a href="#剪枝" class="headerlink" title="剪枝"></a>剪枝</h2><p>当决策树过于复杂时，会导致模型过拟合，此时便需要裁剪掉多余的节点。常用方法有预剪枝和后剪枝。</p>
+<ul>
+<li><strong>预剪枝</strong></li>
+</ul>
+<p>在决策树生长之前判断下一分支能否为模型带来优化，如果有则继续分裂，如果没有则停止分裂，直接生成叶子节点。</p>
+<p>**优点：**计算量小，效率高，避免过拟合</p>
+<p>**缺点：**过早停止可能跳过最佳分裂，模型过于简单，容易欠拟合。</p>
+<ul>
+<li><strong>后剪枝</strong></li>
+</ul>
+<p>决策树完全生成后，自底向上对每个内部节点进行评估，如果在将某节点替换为叶子节点能够带来性能提升（在验证集上评估），则剪枝。</p>
+<p>**优点：**泛化能力比预剪枝更强，不需要设定多个停止阈值。</p>
+<p>**缺点：**计算量大。</p>
+<p><strong>API介绍：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">sklearn</span>.tree.DecisionTreeClassifier(criterion=<span class="string">'gini'</span>, max_depth=<span class="literal">None</span>)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">criterion:'gini'或'entropy'，前者代表基尼系数，后者代表信息增益。默认为gini，即CART算法。</span></span><br><span class="line"><span class="string">min_samples_split:内部节点再划分所需最少样本数</span></span><br><span class="line"><span class="string">min_samples_leaf:叶子节点最少样本数</span></span><br><span class="line"><span class="string">max_depth:决策树最大深度</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h1 id="集成学习"><a href="#集成学习" class="headerlink" title="集成学习"></a>集成学习</h1><p>集成学习是机器学习的一种思想，通过训练多个弱学习器，然后将这些弱学习器组合构建一个强学习器。它优化了单一模型的局限性，缓解了方差（Bagging）与偏差（Boosting）过大过小的问题。</p>
+<p>集成学习方法主要分两类：<strong>Bagging</strong>和<strong>Boosting</strong></p>
+<h2 id="Bagging"><a href="#Bagging" class="headerlink" title="Bagging"></a>Bagging</h2><p>**核心思想：<strong>通过</strong>自助采样（有放回抽样）<strong>生成多个不同的训练集，<strong>分别</strong>训练多个弱学习器，然后通过</strong>平均（回归）<strong>或者</strong>投票（分类）**的方式得到最终结果。</p>
+<p>通过这一思想不难看出bagging方法的特点：</p>
+<ol>
+<li>每个弱学习器的训练可以并行进行，这大大提高了训练速度，计算效率高；对噪声和过拟合也有很好的鲁棒性。</li>
+<li><strong>自助采样</strong>引入弱学习器之间的差异，有效<strong>降低</strong>了整体<strong>方差</strong>，从而减少过拟合。</li>
+</ol>
+<p>用大白话来讲就是，因为自助采样的方法让若干个弱学习器看到的数据都是不一样的，那么在训练的时候弱学习器就会在不同的方向上犯错，最后把它们组合起来构建为一个强学习器时，不同方向上的错误可能会相互抵消。</p>
+<p>最后来介绍一下bagging思想的代表算法：随机森林。</p>
+<h3 id="随机森林"><a href="#随机森林" class="headerlink" title="随机森林"></a>随机森林</h3><p>随机森林是集成学习bagging方法的变体，它以<strong>决策树</strong>为基学习器，在bagging的自助采样基础上，引入特征随机，从而构建出一组差异更大的树，最终通过平均或投票的方法做出决策。</p>
+<p>它的双重随机性（<strong>样本随机</strong>+<strong>特征随机</strong>）使得随机森林中的树之间具有较低的相似性，降低了方差，缓解过拟合。</p>
+<p>选择最佳分裂特征时，根据不纯度准则（基尼系数/信息增益，均方误差）进行选择。生成二叉树（cart风格）</p>
+<p><strong>API介绍：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sklearn.ensemble.RandomForestClassifiter()</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">参数介绍：</span></span><br><span class="line"><span class="string">n_estimators:决策树数量</span></span><br><span class="line"><span class="string">Criterion:不纯度准则选择：gini，entropy</span></span><br><span class="line"><span class="string">max_depth:树的最大深度</span></span><br><span class="line"><span class="string">max_features:决策树构建时使用的最大特征数量：常用值有（auto,sqrt,log2,None）</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">bootstrap:是否采用有放回抽样，默认为Ture</span></span><br><span class="line"><span class="string">min_samples_split:节点分裂时需要的最小样本数</span></span><br><span class="line"><span class="string">min_samples_leaf:叶子节点的最小样本数</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="Boosting"><a href="#Boosting" class="headerlink" title="Boosting"></a>Boosting</h2><p>Boosting核心思想：串行训练每一个基学习器，每个后续的基学习器重点关注前序学习器预测错误的样本，最后将所有基学习器加权组合，构建成一个强学习器。</p>
+<p>与Bagging的‘’并行，平均/投票‘’不同，Boosting是<strong>串行</strong>，<strong>加权</strong>的，目标是<strong>降低偏差</strong>，将多个弱学习器提升为一个高精度模型。</p>
+<p>代表算法有：AdaBoost（自适应提升），GBDT（梯度提升树），XGBoost</p>
+<h3 id="AdaBoost"><a href="#AdaBoost" class="headerlink" title="AdaBoost"></a>AdaBoost</h3><p>AdaBoost通过串行训练多个弱学习器，并动<strong>态调整样本权重</strong>，使得后续学习器重点关注前序错误分类的样本，最后将每个弱学习器加权组合成一个强学习器。</p>
+<p><strong>AdaBoost算法步骤(迭代轮数为T）：</strong></p>
+<p>根据样本权重计算错误率（第一个弱学习器样本权重为1/m），并选取最小错误率</p>
+<ul>
+<li><strong>计算加权错误率</strong></li>
+</ul>
+<p>$$<br>\epsilon_t=\sum_{i=1}^m \omega_t(i)*1[h_t(x_i)\neq y_i]<br>$$</p>
+<p>公式中1[]为指示函数<br>$$<br>1[h_t(x_i)\neq y_i]=\begin{cases} 1,&amp;\text{if }h_t(x_i)\neq y_i \0,&amp;\text{if }h_t(x_i)= y_i<br>\end{cases}<br>$$<br>注意：弱学习器必须满足ε&lt;0.5（比随机猜测好）</p>
+<ul>
+<li><strong>根据加权错误率计算模型权重</strong></li>
+</ul>
+<p>$$<br>\alpha_t=\frac{1}{2}ln(\frac {\epsilon_t}{1-\epsilon_t})<br>$$</p>
+<ul>
+<li><strong>根据模型权重更新样本权重</strong></li>
+</ul>
+<p>$$<br>\hat\omega_{t+1}(i)=\omega_t(i)*<br>\begin{cases}<br>e^{-\alpha_t},&amp;h_t(x_i)=y_i \<br>e^{\alpha_t},&amp;h_t(x_i)\neq y_i</p>
+<p>\end{cases}<br>$$</p>
+<p>从公式中不难看出，当该轮弱学习器h分类正确时，对应的样本权重下降；分类错误时对应的样本权重升高。</p>
+<ul>
+<li><strong>对新样本权重进行归一化</strong></li>
+</ul>
+<p>$$<br>\omega_{t+1}(i)=\frac{\hat\omega_{t+1}(i)}{\sum_{j=1}^m\hat\omega_{t+1}(j)}<br>$$</p>
+<ul>
+<li><strong>对弱学习器加权构建强学习器</strong></li>
+</ul>
+<p>$$<br>H(x)=sign(\sum_{t=1}^T\alpha_t(x)*h_t(x))<br>$$</p>
+<p>其中sign（z）为符号函数<br>$$<br>sign(z)=\begin{cases}<br>+1,&amp;\text{if }z&gt;0 \<br>0,&amp;\text{if }z=0 \<br>-1,&amp;\text{if }z&lt;0<br>\end{cases}<br>$$</p>
+<h3 id="GBDT"><a href="#GBDT" class="headerlink" title="GBDT"></a>GBDT</h3><p>GBDT通过串行地<strong>拟合残差</strong>来逐步优化模型，最终将多个弱学习器（<strong>通常为CART回归树</strong>）加权组合成一个强学习器。</p>
+<p>GBDT模型为：<br>$$<br>F_m(x)=F_{m-1}(x)+\eta*h_m(x)<br>$$<br>其中η为学习率，用新树缓慢地修正模型，避免过拟合。较小地学习率意味着每次只向前迈出一小步，需要更多论迭代，虽然这样计算量加大，但通常能得到泛化能力更强地模型。h为第m轮训练出来地回归树。</p>
+<p>损失函数为平方损失时：<br>$$<br>L(y,F(x))=\frac{1}{2}(y-F(x))^2<br>$$<br>它的负梯度就是残差：<br>$$<br>\gamma_i^{(m)}=-\frac{\partial L(y,F(x_i))}{\partial F(x_i)}=y_i-F_{m-1}(x_i)<br>$$<br>现在采用类似线性规划中单纯性表的更新方式进行举例</p>
+<table>
+<thead>
+<tr>
+<th align="center">特征（x）</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">标签（y）</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="center">预测值（F）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">残差（γ）</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>为了便于计算，设学习率η为1。在平方损失下，初始化模型F取标签的均值。</p>
+<p>更新表格：</p>
+<table>
+<thead>
+<tr>
+<th align="center">特征（x）</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">标签（y）</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="center">预测值（F_0）</td>
+<td>2.83</td>
+<td>2.83</td>
+<td>2.83</td>
+<td>2.83</td>
+<td>2.83</td>
+<td>2.83</td>
+</tr>
+<tr>
+<td align="center">残差（γ）</td>
+<td>-1.83</td>
+<td>-0.83</td>
+<td>-1.83</td>
+<td>1.17</td>
+<td>2.17</td>
+<td>1.17</td>
+</tr>
+</tbody></table>
+<p>分别以1.5，2.5，3.5，4.5，5.5为切分点，计算残差的平方损失，并选取损失最小的为最终切分点。</p>
+<p>现在假设3.5为最佳切分点，那么分别计算左右节点的输出值。</p>
+<p>左叶子：<br>$$<br>C_L=\frac{-1.83-0.83-1.83}{3}=-1.5<br>$$<br>右叶子：<br>$$<br>C_R=\frac{1.17+2.17+1.17}{3}=1.5<br>$$<br>得到第一棵树：<br>$$<br>h_1(x)=\begin{cases}<br>-1.5,&amp;x\le3.5 \<br>1.5,&amp;x&gt;3.5<br>\end{cases}<br>$$<br>第一轮模型更新：<br>$$<br>F_1(x)=F_0(x)+h_1(x)<br>$$<br>新表格为：</p>
+<table>
+<thead>
+<tr>
+<th align="center">特征（x）</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">标签（y）</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr>
+<td align="center">预测值（F_1）</td>
+<td>1.33</td>
+<td>1.33</td>
+<td>1.33</td>
+<td>4.33</td>
+<td>4.33</td>
+<td>4.33</td>
+</tr>
+<tr>
+<td align="center">残差（γ）</td>
+<td>-0.33</td>
+<td>0.67</td>
+<td>-0.33</td>
+<td>-0.33</td>
+<td>0.67</td>
+<td>-0.33</td>
+</tr>
+</tbody></table>
+<p>再拟合一棵树h_2：</p>
+<p>假设第二棵树切分点为4.5：</p>
+<p>左叶子：<br>$$<br>C_L=\frac{-0.33+0.67-0.33-0.33}{4}=-0.08<br>$$<br>右叶子：<br>$$<br>C_R=\frac{0.67-0.33}{2}=0.17<br>$$<br>于是h_2为：<br>$$<br>h_2(x)=\begin{cases}<br>-0.08,&amp;x\le4.5 \<br>0.17,&amp;x&gt;4.5<br>\end{cases}<br>$$<br>第二轮模型更新：<br>$$<br>F_2(x)=F_1(x)+h_2(x)<br>$$<br>以此类推，将新模型F_2的输出作为预测值，并计算残差，更新表格，继续下轮更新。</p>
+<p>这样，我们就完成了GBDT的完整流程。</p>
+<h3 id="XGBoost"><a href="#XGBoost" class="headerlink" title="XGBoost"></a>XGBoost</h3><p>XGBoost是对GBDT的全方位改进，核心区别如下：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>XGBoost</th>
+<th>GBDT</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基学习器</td>
+<td>主要支持CART树，也支持线性分类器，更通用。</td>
+<td>只支持CART树</td>
+</tr>
+<tr>
+<td>损失函数优化</td>
+<td>一阶+二阶导数，收敛更快</td>
+<td>只用一阶导数（梯度下降）</td>
+</tr>
+<tr>
+<td>目标函数</td>
+<td>包含正则项（模型复杂度），如树的椰子树，权重的L2范数，本身就是剪枝过程</td>
+<td>通常只包含损失部分</td>
+</tr>
+<tr>
+<td>过拟合处理</td>
+<td>更强：自带正则项，行/列采样等</td>
+<td>较弱：主要依赖缩减学习率</td>
+</tr>
+<tr>
+<td>缺失值处理</td>
+<td>内置算法，自动学习最佳分裂方向</td>
+<td>不处理，需要提前填充</td>
+</tr>
+<tr>
+<td>计算效率</td>
+<td>快：预排序+列块并行，近似分位数等</td>
+<td>慢：串行构建树</td>
+</tr>
+</tbody></table>
+<h4 id="XGBoost核心公式推导"><a href="#XGBoost核心公式推导" class="headerlink" title="XGBoost核心公式推导"></a>XGBoost核心公式推导</h4><ol>
+<li><p><strong>XGBoost模型表示</strong></p>
+<p>XGBoost任然是个加法模型，由多棵树叠加得到：<br>$$<br>\hat{y}<em>i=\sum</em>{t=1}^Kf_t(x_i)<br>$$<br>其中：</p>
+<p><strong>K：树的棵树</strong></p>
+<p><strong>f：第t棵树</strong></p>
+<p><strong>每棵树输出的是一个叶子权重值，并不是最终标签</strong></p>
+<p>第t轮训练时，模型为：<br>$$<br>\hat{y}_i^{(t)}=\hat{y}_i^{(t-1)}+f_t(x_i)<br>$$</p>
+</li>
+<li><p><strong>目标函数</strong></p>
+<p>XGBoost的核心是最小化目标函数：<br>$$<br>L^{(t)}=\sum_{i=1}^nl(y_i,\hat{y}<em>i^{(t)})+\sum</em>{k=1}^t\Omega(f_k)<br>$$<br>其中：</p>
+<p>L：可微凸损失函数</p>
+<p>Ω：树的复杂度正则项，防止过拟合</p>
+<p>XGBoost中树的复杂度定义为：<br>$$<br>\Omega(f)=\gamma T+\frac{1}{2}\lambda\sum_{j=1}^T||w||^2_j<br>$$<br>其中：<br>T：树的叶子数</p>
+<p>γ：每增加一个叶子带来的惩罚</p>
+<p>ω：第j个叶子的输出值（权重）</p>
+<p>λ：叶子权重的L2正则化系数</p>
+</li>
+<li><p><strong>二阶泰勒展开</strong></p>
+<p>第t轮时，我们要优化的是：<br>$$<br>L^{(t)}=\sum_{i=1}^nl(y_i,\hat{y}_i^{(t-1)}+f_t(x_i))+\Omega(f_t)<br>$$<br>直接求导很困难，所以运用泰勒展开去近似一个函数：<br>$$<br>l(y_i,\hat{y}_i^{(t-1)}+f_t(x_i))\approx l(y_i,\hat{y}_i^{(t-1)})+g_i<em>f_t(x_i)+\frac{1}{2}h_i</em>f_t^2(x_i)<br>$$<br>其中：g和h为别为一阶导和二阶导<br>$$<br>g_i=\frac{\partial l(y_i,\hat{y}_i^{(t-1)})}{\partial \hat{y}_i^{(t-1)}}<br>$$</p>
+<p>$$<br>h_i=\frac{\partial^2 l(y_i,\hat{y}_i^{(t-1)})}{\partial^2 \hat{y}_i^{(t-1)}}<br>$$</p>
+<p>忽略常数项，第t轮目标函数可以写成：<br>$$<br>L^{(t)}\approx \sum_{i=1}^n[g_i<em>f_t(x_i)+\frac{1}{2}h_i</em>f_t^2(x_i)]+\Omega(f_t)<br>$$</p>
+</li>
+<li><p><strong>按叶子节点重组</strong></p>
+<p>定义：<br>$$<br>G_j=\sum g_i<br>$$</p>
+<p>$$<br>H_j=\sum h_i<br>$$</p>
+<p>那么目标函数可以简化为：<br>$$<br>L^{(t)}\approx\sum_{j=1}^T[G_j*w_j+\frac{1}{2}(H_j+\lambda)*w_j^2]+\gamma T<br>$$</p>
+</li>
+<li><p><strong>求最优叶子权重</strong></p>
+<p>对每个叶子权重ω求导，并令导数为0：<br>$$<br>\frac{\part L}{\part w_j}=G_j+(H_j+\lambda)<em>w_j=0<br>$$<br>得到最优叶子值：<br>$$<br>w^</em>_j=-\frac{G_j}{H_j+\lambda}<br>$$</p>
+</li>
+<li><p><strong>最优目标值</strong></p>
+<p>将最优叶子值带回，得到最优目标值：<br>$$<br>L_{best}^{(t)}=-\frac{1}{2}\sum_{j=1}^T\frac{G_j^2}{H_j+\lambda}+\gamma T<br>$$</p>
+</li>
+<li><p><strong>分裂增益</strong></p>
+</li>
+</ol>
+<p>$$<br>Gain=\frac{1}{2}[\frac{G_L^2}{H_L+\lambda}+\frac{G_R^2}{H_R+\lambda}-\frac{G^2}{H+\lambda}-\gamma]<br>$$</p>
+<p>判定规则：</p>
+<p>Gain＞0，则切分有效；</p>
+<p>Gain≤0，则不切分。</p>
+<h1 id="特征预处理"><a href="#特征预处理" class="headerlink" title="特征预处理"></a>特征预处理</h1><p>有时候，特征的单位或者大小相差较大，又或者某特征的方差相比其他特征要大几个量级，很容易影响目标结果，使得模型无法学习到其他的特征。因此，我们需要对数据做预处理，常用的方法有两种：<strong>归一化</strong>，<strong>标准化</strong>。</p>
+<h2 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h2><p>通过对原始数据进行变换，把数据映射到[mi, mx]区间（默认区间为[0,1]）。<br>$$<br>\dot{x}=\frac{x-min}{max-min}<br>$$<br>对于上式，x为该列当前值，min和max为该列的最小最大值。<br>$$<br>\ddot{x}=\dot{x}*(mx-mi)+mi<br>$$<br>对于上式，mi和mx即我们要映射到区间的最小最大值，如：映射到[0，1]区间，则mi=0，mx=1；若映射到[3，5]区间，则mi=3，mx=5。该式所求结果即为最终映射的值。</p>
+<p>由于归一化的计算只涉及到数据的最大最小值，所以如果数据中的极值为异常值时，最终计算出来的结果也会受到影响；故而归一化一般适用于<strong>数据集较小</strong>的情况。</p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line"></span><br><span class="line"><span class="comment">#准备数据集</span></span><br><span class="line">x_train = [[<span class="number">45</span>,<span class="number">56</span>,<span class="number">55</span>,<span class="number">32</span>], [<span class="number">98</span>,<span class="number">11</span>,<span class="number">102</span>,<span class="number">56</span>], [<span class="number">33</span>,<span class="number">78</span>,<span class="number">69</span>,<span class="number">75</span>]]</span><br><span class="line"><span class="comment">#创建归一化对象</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">MinMaxScaler()可以设置参数feature_range(mi,mx),</span></span><br><span class="line"><span class="string">即所要映射的区间范围</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">scaler = MinMaxScaler()</span><br><span class="line"><span class="comment">#对原始数据集进行归一化操作</span></span><br><span class="line">x_train_new = scaler.fit_transform(x_train)</span><br><span class="line"><span class="comment">#打印结果</span></span><br><span class="line"><span class="built_in">print</span>(x_train_new)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="标准化"><a href="#标准化" class="headerlink" title="标准化"></a>标准化</h2><p>通过对原始数据进行标准化，转换为均值为0标准差为1的标准正态分布的数据。<br>$$<br>\dot{x}=\frac{x-mean}{\sigma}<br>$$<br>对于上式，x为某一特征的当前值，mean为该特征的的均值，σ为特征的标准差。</p>
+<p>由于标准化的计算涉及到了均值和标准差，所以即便数据集中有异常值，只要数据量适当，异常值的影响就会大大减小。</p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"></span><br><span class="line"><span class="comment">#准备数据集</span></span><br><span class="line">x_train = [[<span class="number">45</span>,<span class="number">56</span>,<span class="number">55</span>,<span class="number">32</span>], [<span class="number">98</span>,<span class="number">11</span>,<span class="number">102</span>,<span class="number">56</span>], [<span class="number">33</span>,<span class="number">78</span>,<span class="number">69</span>,<span class="number">75</span>]]</span><br><span class="line"><span class="comment">#创建标准化对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment">#对原始数据集进行标准化操作</span></span><br><span class="line">x_train_new = scaler.fit_transform(x_train)</span><br><span class="line"><span class="comment">#打印结果</span></span><br><span class="line"><span class="built_in">print</span>(x_train_new)</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h1 id="超参数选择方法"><a href="#超参数选择方法" class="headerlink" title="超参数选择方法"></a>超参数选择方法</h1><h2 id="网格搜索"><a href="#网格搜索" class="headerlink" title="网格搜索"></a>网格搜索</h2><p>在学习网格搜索之前，我们需要先了解交叉验证。</p>
+<p>**交叉验证原理：**将训练集划分成n份，拿第i份作验证集，其他n-1份作训练集，然后训练，得到模型评分（总计训练n回，其中i=1，2，3……n）。最后取n次评分的均值作为模型的最终评分。如果第i次模型评分最好，再使用训练集（不划分）训练一次，最后使用预先划分好的测试集对模型评估。</p>
+<p>**网格搜索：**网格搜索是模型调参的有力工具，只需要将若干参数传递给网格搜索对象，它会自动帮我们找到一组最优的超参数。它结合了交叉验证，以此解决模型的数据输入问题。</p>
+<p><strong>网格搜索API介绍：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV(estimator, param_grid, cv)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">estimator:估计器对象，即要进行网格搜索的模型</span></span><br><span class="line"><span class="string">param_grid:估计器参数（dict，以字典传入），即模型需要的参数组合</span></span><br><span class="line"><span class="string">cv：交叉验证的次数</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment">#结果分析</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">bestscore：在交叉验证中验证的最好的结果</span></span><br><span class="line"><span class="string">bestestimator：最好的参数模型</span></span><br><span class="line"><span class="string">cvresults：每次交叉验证后的验证集和训练集的准确率结果</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>代码实现：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"></span><br><span class="line"><span class="comment">#总sklearn中获取鸢尾花数据集</span></span><br><span class="line">iris_data = load_iris()</span><br><span class="line"><span class="comment">#转为dataframe对象</span></span><br><span class="line">df_iris = pd.DataFrame(iris_data.data, columns=iris_data.feature_names)</span><br><span class="line"><span class="comment">#增加标签列</span></span><br><span class="line">df_iris[<span class="string">'label'</span>] = iris_data.target</span><br><span class="line"><span class="comment">#可视化，绘制散点图</span></span><br><span class="line">sns.lmplot(data=df_iris, x=<span class="string">'sepal length (cm)'</span>, y=<span class="string">'sepal width (cm)'</span>, hue = <span class="string">'label'</span>)</span><br><span class="line">plt.title(<span class="string">'散点图'</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="comment">#划分训练集和测试集</span></span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(iris_data.data, iris_data.target, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="comment">#创建标准化对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment">#对原始数据进行标准化操作</span></span><br><span class="line">x_train = scaler.fit_transform(x_train)</span><br><span class="line">x_test = scaler.transform(x_test)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="comment">#创建模型对象</span></span><br><span class="line">model = KNeighborsClassifier()</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line"><span class="comment">#创建网格搜做对象</span></span><br><span class="line">model = GridSearchCV(estimator=model, param_grid={<span class="string">'n_neighbors'</span>:[i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">11</span>)]}, cv=<span class="number">5</span>)</span><br><span class="line"><span class="comment">#训练</span></span><br><span class="line">model.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优分数：'</span>, model.best_score_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优模型：'</span>, model.best_estimator_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优超参数：'</span>, model.best_params_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'交叉验证结果：'</span>, model.cv_results_)</span><br><span class="line"></span><br><span class="line"><span class="comment">#选择最优模型，并进行训练</span></span><br><span class="line">model = model.best_estimator_</span><br><span class="line">model.fit(x_train, y_train)</span><br><span class="line"><span class="comment">#预测</span></span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"></span><br><span class="line"><span class="comment">#评估</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'准确率'</span>, accuracy_score(y_test, y_pred))</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h1 id="项目实战"><a href="#项目实战" class="headerlink" title="项目实战"></a>项目实战</h1><h2 id="鸢尾花案例-knn"><a href="#鸢尾花案例-knn" class="headerlink" title="鸢尾花案例-knn"></a>鸢尾花案例-knn</h2><p>鸢尾花案例看说得上是入门机器学习的经典案例，在进行训练之前，先给出基本的操作流程：</p>
+<ol>
+<li>获取数据集</li>
+<li>数据基本处理</li>
+<li>特征预处理</li>
+<li>模型训练</li>
+<li>模型预测</li>
+<li>模型评估</li>
+</ol>
+<p><strong>获取数据集：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"></span><br><span class="line"><span class="comment">#总sklearn中获取鸢尾花数据集</span></span><br><span class="line">iris_data = load_iris()</span><br><span class="line"><span class="comment">#转为dataframe对象</span></span><br><span class="line">df_iris = pd.DataFrame(iris_data.data, columns=iris_data.feature_names)</span><br><span class="line"><span class="comment">#增加标签列</span></span><br><span class="line">df_iris[<span class="string">'label'</span>] = iris_data.target</span><br><span class="line"><span class="comment">#可视化，绘制散点图</span></span><br><span class="line">sns.lmplot(data=df_iris, x=<span class="string">'sepal length (cm)'</span>, y=<span class="string">'sepal width (cm)'</span>, hue = <span class="string">'label'</span>)</span><br><span class="line">plt.title(<span class="string">'散点图'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>数据集基本处理：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="comment">#划分训练集和测试集</span></span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(iris_data.data, iris_data.target, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>特征预处理：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="comment">#创建标准化对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment">#对原始数据进行标准化操作</span></span><br><span class="line">x_train = scaler.fit_transform(x_train)</span><br><span class="line">x_test = scaler.transform(x_test)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型训练：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="comment">#创建模型对象</span></span><br><span class="line">model = KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">model.fit(x_train,y_train)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型预测：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'预测结果：'</span>, y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型评估：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#模型评估</span></span><br><span class="line"><span class="comment">#1.基于训练集/测试集的特征，训练集/测试集的标签进行评估</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'准确率：'</span>, model.score(x_train, y_train))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.基于测试级的标签和预测结果</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'准确率：'</span>, accuracy_score(y_test, y_pred))</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h2 id="手写数字识别-knn"><a href="#手写数字识别-knn" class="headerlink" title="手写数字识别-knn"></a>手写数字识别-knn</h2><p><strong>获取数据集：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">'./data/mnist.csv'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>数据处理：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = data.iloc[:,<span class="number">1</span>:]</span><br><span class="line">y = data.iloc[:,<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(x, y, stratify=y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>特征预处理：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="comment"># 创建标准化对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment">#对数据进行标准化操作</span></span><br><span class="line">x_train = scaler.fit_transform(x_train)</span><br><span class="line">y_train = scaler.transform(y_train)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型训练：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier</span><br><span class="line"><span class="comment">#创建模型对象</span></span><br><span class="line">model = KNeighborsClassifier(n_neighbors=<span class="number">3</span>)</span><br><span class="line">model.fit(x_train, y_train)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型预测：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'预测结果：'</span>, y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型评估：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'准确率：'</span>, accuracy_score(y_test, y_pred))</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>保存模型：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> joblib</span><br><span class="line">joblib.dump(model, filename:<span class="string">'./model/mnist.pkl'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>加载模型：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加载图片</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">由于加载图片时系统对数据自动做了归一化，所以这里不需要再对x做预处理</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">x = plt.imread(<span class="string">'./data/image.png'</span>)</span><br><span class="line"><span class="comment">#将x换成一行多列</span></span><br><span class="line">x = x.reshape(<span class="number">1</span>,-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加载模型</span></span><br><span class="line">model = joblib.load(<span class="string">'./model/mnist.pkl'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#预测</span></span><br><span class="line">y_pred = model.predict(x)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="波士顿房价预测-线性回归"><a href="#波士顿房价预测-线性回归" class="headerlink" title="波士顿房价预测-线性回归"></a>波士顿房价预测-线性回归</h2><p><strong>获取数据集：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取数据</span></span><br><span class="line">data_url = <span class="string">"http://lib.stat.cmu.edu/datasets/boston"</span></span><br><span class="line">raw_df = pd.read_csv(data_url, sep=<span class="string">"\\s+"</span>, skiprows=<span class="number">22</span>, header=<span class="literal">None</span>)</span><br><span class="line">data = np.hstack([raw_df.values[::<span class="number">2</span>, :], raw_df.values[<span class="number">1</span>::<span class="number">2</span>, :<span class="number">2</span>]])</span><br><span class="line">target = raw_df.values[<span class="number">1</span>::<span class="number">2</span>, <span class="number">2</span>]</span><br><span class="line"><span class="built_in">type</span>(target)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>数据预处理：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据处理</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(data, target, test_size=<span class="number">0.2</span>, random_state=<span class="number">23</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>特征预处理：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 特征工程</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line"><span class="comment"># 创建标准化对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment"># 对数据进行标准化</span></span><br><span class="line">x_train = scaler.fit_transform(x_train)</span><br><span class="line">x_test = scaler.transform(x_test)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型训练：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型训练</span></span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="comment"># 创建线性回归模型-最小二乘法</span></span><br><span class="line">model = LinearRegression(fit_intercept=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 训练</span></span><br><span class="line">model.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">使用线性回归-随机梯度下降模型</span></span><br><span class="line"><span class="string">from sklearn.linear_model import SGDRegressor</span></span><br><span class="line"><span class="string">model = SGDRegressor(fit_intercept=True, learning_rate='constant', eta0=0.01) #eta为学习率</span></span><br><span class="line"><span class="string">model.fit(x_train, x_test)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment"># 输出权重与偏置</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'权重：'</span>, model.coef_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'偏置：'</span>, model.intercept_)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型预测：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型预测</span></span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'预测：'</span>, y_pred)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>模型评估：</strong></p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 模型评估</span></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error, root_mean_squared_error, median_absolute_error</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'均方误差（MSE）：'</span>, mean_squared_error(y_test, y_pred))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'均方根误差（RMSE）：'</span>, root_mean_squared_error(y_test,y_pred))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'平均绝对误差（MAE）：'</span>, median_absolute_error(y_test, y_pred))</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="癌症预测-逻辑回归"><a href="#癌症预测-逻辑回归" class="headerlink" title="癌症预测-逻辑回归"></a>癌症预测-逻辑回归</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.加载数据</span></span><br><span class="line">data = pd.read_csv(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.数据预处理</span></span><br><span class="line">data.replace(to_replace:<span class="string">'?'</span>, np.nan, inplace=<span class="literal">True</span>)</span><br><span class="line">data.dropna(axis=<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.特征工程（提取，预处理……）</span></span><br><span class="line">x = data.iloc[:, <span class="number">1</span>:-<span class="number">1</span>]</span><br><span class="line">y = data[<span class="string">'Class'</span>]</span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(x, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">23</span>)</span><br><span class="line"><span class="comment"># 创建标准化对象</span></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line"><span class="comment"># 对数据进行标准化</span></span><br><span class="line">x_train = scaler.fit_transform(x_train)</span><br><span class="line">x_test = scaler.transform(x_test)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4.模型训练</span></span><br><span class="line">model = LogisticRegression()</span><br><span class="line">model.fit(x_train,y_train)</span><br><span class="line"><span class="comment"># 5.模型预测</span></span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'预测：'</span>, y_pred)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="泰坦尼克号案例-随机森林"><a href="#泰坦尼克号案例-随机森林" class="headerlink" title="泰坦尼克号案例-随机森林"></a>泰坦尼克号案例-随机森林</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="葡萄酒案例-AdaBoost"><a href="#葡萄酒案例-AdaBoost" class="headerlink" title="葡萄酒案例-AdaBoost"></a>葡萄酒案例-AdaBoost</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_wine</span><br><span class="line">wine_data = load_wine()</span><br><span class="line">df = pd.DataFrame(wine_data.data, columns=wine_data.feature_names)</span><br><span class="line">df[<span class="string">'label'</span>] = wine_data.target</span><br><span class="line">df = df[df.label != <span class="number">1</span>]</span><br><span class="line">df.head()</span><br><span class="line">x = df[[<span class="string">'alcohol'</span>, <span class="string">'hue'</span>]]</span><br><span class="line">y = df[<span class="string">'label'</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelEncoder</span><br><span class="line">le = LabelEncoder()</span><br><span class="line">y = le.fit_transform(y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 划分数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=<span class="number">42</span>, stratify=y)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建adaboost模型对象</span></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> AdaBoostClassifier</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier</span><br><span class="line">model = AdaBoostClassifier(estimator=DecisionTreeClassifier(max_depth=<span class="number">1</span>),random_state=<span class="number">42</span>, n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型训练</span></span><br><span class="line">model.fit(x_train, y_train)</span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="built_in">print</span>(y_pred)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"><span class="built_in">print</span>(accuracy_score(y_test, y_pred))</span><br><span class="line"></span><br><span class="line"><span class="comment">#创建网格搜索</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">model = AdaBoostClassifier(estimator=DecisionTreeClassifier(),random_state=<span class="number">42</span>)</span><br><span class="line">param = {<span class="string">'estimator__max_depth'</span>:[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], <span class="string">'learning_rate'</span>:[<span class="number">0.8</span>,<span class="number">0.9</span>,<span class="number">1.0</span>], <span class="string">'n_estimators'</span>:[<span class="number">50</span>,<span class="number">100</span>,<span class="number">200</span>]}</span><br><span class="line">grid_search = GridSearchCV(estimator=model, param_grid=param, cv=<span class="number">5</span>)</span><br><span class="line">grid_search.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优分数：'</span>, grid_search.best_score_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'-'</span>*<span class="number">50</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优超参数：'</span>, grid_search.best_params_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'-'</span>*<span class="number">50</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优模型：'</span>, grid_search.best_estimator_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'-'</span>*<span class="number">50</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'交叉验证结果：'</span>, grid_search.cv_results_)</span><br><span class="line"></span><br><span class="line">model = grid_search.best_estimator_</span><br><span class="line">model.fit(x_train, y_train)</span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="built_in">print</span>(accuracy_score(y_test, y_pred))</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="泰坦尼克号案例-GBDT"><a href="#泰坦尼克号案例-GBDT" class="headerlink" title="泰坦尼克号案例-GBDT"></a>泰坦尼克号案例-GBDT</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取数据集</span></span><br><span class="line"><span class="keyword">from</span> seaborn <span class="keyword">import</span> load_dataset</span><br><span class="line">titanic_data = load_dataset(<span class="string">"titanic"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据预处理</span></span><br><span class="line">x = titanic_data[[<span class="string">'pclass'</span>, <span class="string">'sex'</span>, <span class="string">'age'</span>]].copy()</span><br><span class="line">y = titanic_data[<span class="string">'survived'</span>].copy()</span><br><span class="line">x.age = x[<span class="string">'age'</span>].fillna(x[<span class="string">'age'</span>].mean())</span><br><span class="line">x[<span class="string">'sex'</span>] = x[<span class="string">'sex'</span>].<span class="built_in">map</span>({<span class="string">'female'</span>:<span class="number">0</span>, <span class="string">'male'</span>:<span class="number">1</span>})</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(x,y,random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier</span><br><span class="line">estimator = GradientBoostingClassifier(random_state=<span class="number">42</span>)</span><br><span class="line"><span class="comment"># 创建网格搜索对象</span></span><br><span class="line">param = {<span class="string">'max_depth'</span>:[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>], <span class="string">'n_estimators'</span>:[<span class="number">100</span>,<span class="number">150</span>,<span class="number">200</span>], <span class="string">'learning_rate'</span>:[<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">0.3</span>], <span class="string">'subsample'</span>:[<span class="number">0.8</span>,<span class="number">0.9</span>,<span class="number">1.0</span>]}</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">grid_search = GridSearchCV(estimator=estimator, param_grid=param,cv=<span class="number">5</span>)</span><br><span class="line">grid_search.fit(x_train, y_train)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优模型:'</span>, grid_search.best_estimator_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优分数:'</span>, grid_search.best_score_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优超参:'</span>, grid_search.best_params_)</span><br><span class="line"></span><br><span class="line">model = grid_search.best_estimator_</span><br><span class="line">model.fit(x_train, y_train)</span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"><span class="built_in">print</span>(classification_report(y_test, y_pred))</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="红酒品质分类-XGBoost"><a href="#红酒品质分类-XGBoost" class="headerlink" title="红酒品质分类-XGBoost"></a>红酒品质分类-XGBoost</h2><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加载数据集</span></span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_wine</span><br><span class="line">wine = load_wine()</span><br><span class="line"></span><br><span class="line">wine_df = pd.DataFrame(wine.data, columns=wine.feature_names)</span><br><span class="line">wine_df[<span class="string">'label'</span>] = pd.DataFrame(wine.target)</span><br><span class="line"></span><br><span class="line">x = wine_df.iloc[:, :-<span class="number">1</span>]</span><br><span class="line">y = wine_df.iloc[:, -<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>, stratify=y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> xgboost</span><br><span class="line">estimator = xgboost.XGBClassifier(objective = <span class="string">'multi:softmax'</span>, random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建分层交叉验证（标签分布不均时使用）</span></span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> StratifiedKFold</span><br><span class="line">skf = StratifiedKFold(n_splits=<span class="number">5</span>, shuffle=<span class="literal">True</span>,random_state=<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据集不平衡时用class_weight平衡权重</span></span><br><span class="line"><span class="keyword">from</span> sklearn.utils <span class="keyword">import</span> class_weight</span><br><span class="line">sample_weights = class_weight.compute_sample_weight(<span class="string">'balanced'</span>, y_train)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建网格搜索</span></span><br><span class="line">param = {<span class="string">'n_estimators'</span>:[<span class="number">100</span>,<span class="number">150</span>,<span class="number">200</span>,<span class="number">250</span>], <span class="string">'learning_rate'</span>:[<span class="number">0.3</span>,<span class="number">0.4</span>,<span class="number">0.5</span>,<span class="number">0.6</span>], <span class="string">'max_depth'</span>:[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>]}</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV</span><br><span class="line">grid_search = GridSearchCV(estimator=estimator, param_grid=param, cv=skf)</span><br><span class="line">grid_search.fit(x_train, y_train, sample_weight=sample_weights)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优分数：'</span>, grid_search.best_score_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最有参数：'</span>, grid_search.best_params_)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'最优模型：'</span>, grid_search.best_estimator_)</span><br><span class="line"></span><br><span class="line">model = grid_search.best_estimator_</span><br><span class="line">y_pred = model.predict(x_test)</span><br><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line"><span class="built_in">print</span>(accuracy_score(y_test, y_pred))</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        <div>
+  <div style="text-align:center;color: #999;font-size:14px;margin-bottom: 10px;">-------------本文结束<i class="icon icon-paw" style="margin: 0 3px;"></i>感谢您的阅读-------------</div>
+</div>
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新：<time datetime="2026-06-07T11:59:12.970Z" itemprop="dateUpdated">2026-06-07 19:59:12</time>
+</span>
+
+
+        
+          原文链接：<a href="/blog/posts/7b642e0c/" target="_blank" rel="external">https://oliverrobert.github.io/posts/7b642e0c/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='https://oliverrobert.github.io/about/'">
+            <img src="/blog/img/avatar.jpg" alt="Oliver">
+            <a>Oliver</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ML/" rel="tag">ML</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://oliverrobert.github.io/posts/7b642e0c/&title=《ML》 — Oliver's Blog&pic=https://oliverrobert.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://oliverrobert.github.io/posts/7b642e0c/&title=《ML》 — Oliver's Blog&source=记录学习 or 发疯日常" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://oliverrobert.github.io/posts/7b642e0c/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ML》 — Oliver's Blog&url=https://oliverrobert.github.io/posts/7b642e0c/&via=https://oliverrobert.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://oliverrobert.github.io/posts/7b642e0c/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/blog/posts/142c191/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：matplotlib-seaborn">下一篇：matplotlib-seaborn</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2021
+            <i class="icon icon-lg icon-heartbeat"></i>
+            <a href="https://oliverrobert.github.io">https://oliverrobert.github.io/</a>
+            <!-- <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a> -->
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <!-- <span>
+            
+	<i class="icon icon-lg icon-user">
+<span id="busuanzi_site_uv" style='display:none'>
+       访问用户：<span id="busuanzi_value_site_uv"></span>
+    </span>人</i>
+    ·
+    <i class="icon icon-lg icon-eye">
+    <span id="busuanzi_site_pv" style='display:none'>
+      访问次数：<span id="busuanzi_value_site_pv"></span>
+    </span>次
+    </i>
+
+
+        </span>
+        <br/> -->
+
+        <!-- <span class="license"><a  target="_blank" rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">博客内容遵循 知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span> -->
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://oliverrobert.github.io/posts/7b642e0c/&title=《ML》 — Oliver's Blog&pic=https://oliverrobert.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://oliverrobert.github.io/posts/7b642e0c/&title=《ML》 — Oliver's Blog&source=记录学习 or 发疯日常" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://oliverrobert.github.io/posts/7b642e0c/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ML》 — Oliver's Blog&url=https://oliverrobert.github.io/posts/7b642e0c/&via=https://oliverrobert.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://oliverrobert.github.io/posts/7b642e0c/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aW66jMBAFwOx/05kNXOCcNhkJU3yhhICLSFa/Pp/4+J4eR1d+ymPltxgYGHszkiWef5I8+Fse7evDwMB4A+PowUfn5xvu+Z0TZL42DAwMjHPG+SfnAV+ydAwMDIwZo13EChgDAwOjTWITfF5Ka1/Ebbk4BgbGAxn5Iv7/+U/6GxgYGI9izIr1K+HjrOVwcR8MDIytGfkG1y4iD/JmGy4GBsbbGG3Q1iaZ+ehY0ha9LYbFwMB4ICMpxCffzobJ2msueBgYGBsx8jR1loi2o655CzN6ixgYGBsxZktpC2QrwWUxLYKBgbEpY32oa7aZJltqdH8MDIytGSvBX3u39olJ/v1HfwMDA2M7xkoRP79+VqorWggYGBhbM1aWcm93Ii+0RWMWGBgYmzLyVHYl3Z1tzVHqi4GBsSmjDchmU1htayH/Bw4jXAwMjE0ZeSjWFt3aklx9fwwMjFcy2lblyrcrBTgMDIw3MNYL/bPNut1q2xENDAyM/Rj5UNddgeDF9EcyIZIX3TAwMDZi5C2BlWGyXxTyMDAw3sbIC155wtmOa8xgGBgYuzK+5dGOaMzCyrphgIGBsTUjP9qy/jARLV9HDcPAwHgsI09Hkw3x1y3M4mcYGBjbMdqi/HrYd28BDgMDA6NNSmdtzlmSjIGBgdGet6W6PLi8CBwxMDBewFgfm1jfoNv7Y2BgvIfRpo7rw/HtEm9ramJgYDyP8Q8fY0HPLp5YZAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/blog/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/blog/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/blog/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/blog/js/script.min.js?v=3.0" ></script>
+
+<!-- 相册&配置 -->
+<script src="/blog/js/photoswipe.min.js?v=3.0.min.js?v=3.0" ></script>
+<script src="/blog/js/photoswipe-ui-default.min.js?v=3.0.min.js?v=3.0"></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2026/02/02");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+   getHitokoto();
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "Oliver");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c Oliver'sblog %c  © Oliver Robert  https://oliverrobert.github.io \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    console.log('%c [分享修复] 补丁脚本开始执行', 'background: #222; color: #bada55');
+
+    var maxAttempts = 50;
+    var attempt = 0;
+    var shareFixed = false;
+    var wxFixed = false;
+
+    // 修复分享按钮
+    function fixShareBtn() {
+        var fab = document.getElementById('shareFab');
+        var pageShare = document.getElementById('pageShare');
+
+        if (!fab || !pageShare) {
+            return false;
+        }
+
+        if (fab.getAttribute('data-fixed') === 'true') {
+            return true;
+        }
+
+        // 克隆节点清除旧事件
+        var newFab = fab.cloneNode(true);
+        fab.parentNode.replaceChild(newFab, fab);
+        fab = newFab;
+
+        console.log('%c [分享修复] 绑定分享按钮事件', 'color: #0088ff');
+
+        var toggleMenu = function(e) {
+            console.log('%c [分享修复] 分享按钮被点击', 'background: green; color: white');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            pageShare.classList.toggle('in');
+        };
+
+        fab.addEventListener('click', toggleMenu, false);
+        fab.addEventListener('touchstart', toggleMenu, { passive: false });
+
+        // 点击外部关闭
+        document.addEventListener('click', function(e) {
+            if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+                pageShare.classList.remove('in');
+            }
+        });
+
+        fab.setAttribute('data-fixed', 'true');
+        console.log('%c [分享修复] ✅ 分享按钮修复成功', 'color: green');
+        return true;
+    }
+
+    // 修复微信分享按钮 - 关键新增!
+    function fixWxShareBtn() {
+        var wxModal = document.getElementById('wxShare');
+        var wxBtns = document.querySelectorAll('.wxFab');
+
+        if (!wxModal || wxBtns.length === 0) {
+            return false;
+        }
+
+        // 检查是否已修复
+        if (wxBtns[0].getAttribute('data-wx-fixed') === 'true') {
+            return true;
+        }
+
+        console.log('%c [分享修复] 找到 ' + wxBtns.length + ' 个微信分享按钮', 'color: #0088ff');
+
+        // 为每个微信分享按钮绑定事件
+        wxBtns.forEach(function(wxBtn, index) {
+            // 克隆节点清除旧事件
+            var newWxBtn = wxBtn.cloneNode(true);
+            wxBtn.parentNode.replaceChild(newWxBtn, wxBtn);
+            
+            var toggleWxModal = function(e) {
+                console.log('%c [分享修复] 微信分享按钮被点击!', 'background: red; color: white');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // 切换微信弹窗显示/隐藏
+                if (wxModal.classList.contains('in')) {
+                    wxModal.classList.remove('in');
+                    wxModal.classList.remove('ready');
+                    // 移除遮罩
+                    var mask = document.getElementById('mask');
+                    if (mask) {
+                        mask.classList.remove('in');
+                    }
+                } else {
+                    wxModal.classList.add('ready');
+                    setTimeout(function() {
+                        wxModal.classList.add('in');
+                    }, 0);
+                    // 添加遮罩
+                    var mask = document.getElementById('mask');
+                    if (mask) {
+                        mask.classList.add('in');
+                    }
+                }
+            };
+
+            newWxBtn.addEventListener('click', toggleWxModal, false);
+            newWxBtn.addEventListener('touchstart', toggleWxModal, { passive: false });
+            newWxBtn.setAttribute('data-wx-fixed', 'true');
+            
+            console.log('%c [分享修复] 微信按钮 #' + index + ' 绑定完成', 'color: #0088ff');
+        });
+
+        // 绑定关闭按钮
+        var closeBtn = wxModal.querySelector('.close');
+        if (closeBtn && !closeBtn.getAttribute('data-close-fixed')) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                wxModal.classList.remove('in');
+                setTimeout(function() {
+                    wxModal.classList.remove('ready');
+                }, 300);
+                var mask = document.getElementById('mask');
+                if (mask) {
+                    mask.classList.remove('in');
+                }
+            });
+            closeBtn.setAttribute('data-close-fixed', 'true');
+        }
+
+        // 点击遮罩关闭
+        var mask = document.getElementById('mask');
+        if (mask && !mask.getAttribute('data-wx-mask-fixed')) {
+            mask.addEventListener('click', function() {
+                if (wxModal.classList.contains('in')) {
+                    wxModal.classList.remove('in');
+                    setTimeout(function() {
+                        wxModal.classList.remove('ready');
+                    }, 300);
+                    mask.classList.remove('in');
+                }
+            });
+            mask.setAttribute('data-wx-mask-fixed', 'true');
+        }
+
+        console.log('%c [分享修复] ✅ 微信分享修复成功', 'color: green');
+        return true;
+    }
+
+    // 轮询检查并修复
+    var timer = setInterval(function() {
+        attempt++;
+        
+        if (!shareFixed) {
+            shareFixed = fixShareBtn();
+        }
+        
+        if (!wxFixed) {
+            wxFixed = fixWxShareBtn();
+        }
+        
+        // 两个都修复成功或超过最大尝试次数
+        if ((shareFixed && wxFixed) || attempt > maxAttempts) {
+            clearInterval(timer);
+            if (shareFixed && wxFixed) {
+                console.log('%c [分享修复] 🎉 所有分享功能修复完成!', 'background: green; color: white; font-size: 14px; padding: 5px;');
+            } else {
+                console.warn('[分享修复] 修复超时 - 分享按钮:' + shareFixed + ', 微信按钮:' + wxFixed);
+            }
+        }
+    }, 500);
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Language" content="zh-cn">
+    <meta charset="utf-8">
+    
+    
+    
+    <title>matplotlib-seaborn | Oliver&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="theme-color" content="#77AAFF">
+    
+    
+    <meta name="keywords" content="matplotlib,seaborn">
+    
+    
+
+    
+
+    <!-- Baidu Push -->
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+
+	var _hmt = _hmt || [];
+</script>
+
+
+
+    
+    <meta name="description" content="Matplotlib 是一个非常强大的 Python 画图工具，我们可以使用该工具将很多数据通过图表的形式更直观的呈现出来  折线图-柱状图-条形图1234567891011121314151617181920212223242526272829303132333435363738x &#x3D; [&#39;1月&#39;, &#39;2月&#39;, &#39;3月&#39;]y &#x3D; [2,5,3]#设置长宽为（10，5）的画图plt.figure">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matplotlib-seaborn">
+<meta property="og:url" content="https://oliverrobert.github.io/posts/142c191/index.html">
+<meta property="og:site_name" content="Oliver&#39;s Blog">
+<meta property="og:description" content="Matplotlib 是一个非常强大的 Python 画图工具，我们可以使用该工具将很多数据通过图表的形式更直观的呈现出来  折线图-柱状图-条形图1234567891011121314151617181920212223242526272829303132333435363738x &#x3D; [&#39;1月&#39;, &#39;2月&#39;, &#39;3月&#39;]y &#x3D; [2,5,3]#设置长宽为（10，5）的画图plt.figure">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-02T13:05:05.235Z">
+<meta property="article:modified_time" content="2026-05-03T13:04:16.716Z">
+<meta property="article:author" content="Oliver">
+<meta property="article:tag" content="matplotlib,seaborn">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="Oliver&#39;s Blog" href="https://oliverrobert.github.io/atom.xml">
+    
+    <link rel="shortcut icon" href="/blog/img/favicon.ico">
+    <link id="style" rel="stylesheet" href="/blog/css/style.css?v=3.0">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+    
+            
+<meta name="generator" content="Hexo 8.1.1">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+    <aside id="menu"  class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" >
+      <div class="brand">
+        <a href="https://oliverrobert.github.io/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/blog/img/avatar.jpg" alt="avatar">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname" id="name">Oliver</h5>
+          
+            <div id="yiyanmotto" class="motto">&nbsp;</div>
+          
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+              <li class="waves-block waves-effect">
+                  <a href="/blog/"  >
+                    <i class="icon icon-lg icon-home"></i>
+                    <span>主 页</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/archives"  >
+                    <i class="icon icon-lg icon-archives"></i>
+                    <span>归 档</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/tags"  >
+                    <i class="icon icon-lg icon-tags"></i>
+                    <span>标 签</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/photos"  >
+                    <i class="icon icon-lg icon-image"></i>
+                    <span>相册</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+              <li class="waves-block waves-effect">
+                  <a href="/blog/about"  >
+                    <i class="icon icon-lg icon-paper-plane"></i>
+                    <span>关 于</span><i class="icon icon-lg icon-caret-left"></i>
+                  </a>
+              </li>
+            
+      <div class="nav2">
+          
+              <a class="nav2item" data-title="Twitter" href="https://x.com/Enyukishir0" target="_blank"title="Twitter" >
+                <i class="icon icon-lg icon-twitter twitter"></i>
+              </a>
+          
+              <a class="nav2item" data-title="Github" href="https://github.com/OliverRobert" target="_blank"title="Github" >
+                <i class="icon icon-lg icon-github github"></i>
+              </a>
+          
+
+            </div>
+        
+      </ul>
+        
+    </div>
+  </div>
+ 
+</aside>
+
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">matplotlib-seaborn</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        <a href="https://oliverrobert.github.io/atom.xml" target="_blank" class="header-icon waves-effect waves-circle waves-light" id="Rss">
+          <i class="icon icon-lg icon-rss"></i>
+        </a>
+    </div>
+</header>
+<header class="content-header post-header">
+    
+    
+    <div class="container fade-scale">
+        <div id="myheader">
+            <h1 class="title">
+                
+            </h1>
+            <h5 class="subtitle">
+                
+                
+            </h5>
+        </div>
+    </div>
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>目录</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%8A%98%E7%BA%BF%E5%9B%BE-%E6%9F%B1%E7%8A%B6%E5%9B%BE-%E6%9D%A1%E5%BD%A2%E5%9B%BE"><span class="post-toc-number">1.</span> <span class="post-toc-text">折线图-柱状图-条形图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E9%A5%BC%E5%9B%BE"><span class="post-toc-number">2.</span> <span class="post-toc-text">饼图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%95%A3%E7%82%B9%E5%9B%BE"><span class="post-toc-number">3.</span> <span class="post-toc-text">散点图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%AE%B1%E7%BA%BF%E5%9B%BE"><span class="post-toc-number">4.</span> <span class="post-toc-text">箱线图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#seaborn"><span class="post-toc-number">5.</span> <span class="post-toc-text">seaborn</span></a></li></ol>
+        </nav>
+    </aside>
+   
+<article id="post-matplotlib"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">matplotlib-seaborn</h1>
+        <div class="post-meta">
+            <i class="icon icon-lg icon-calendar-o"></i>
+            发表于
+            <time class="post-time" title="2026-05-02 21:05:05" datetime="2026-05-02T13:05:05.235Z"  itemprop="datePublished">2026-05-02</time>
+
+            <br id="mybreak"/>
+            
+<script>
+	mybreak.style="display:none";
+</script>
+
+
+            <i>·</i>
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>次浏览
+</span>
+
+
+        </div>
+        <div class="post-count-custom">
+            <i class="icon icon-lg icon-comment-o"></i>
+            阅读本文可能花费您&nbsp;<span class="post-count">3</span>&nbsp;分钟
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <hr>
+<p>Matplotlib 是一个非常强大的 Python 画图工具，我们可以使用该工具将很多数据通过图表的形式更直观的呈现出来</p>
+<hr>
+<h1 id="折线图-柱状图-条形图"><a href="#折线图-柱状图-条形图" class="headerlink" title="折线图-柱状图-条形图"></a>折线图-柱状图-条形图</h1><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="string">'1月'</span>, <span class="string">'2月'</span>, <span class="string">'3月'</span>]</span><br><span class="line">y = [<span class="number">2</span>,<span class="number">5</span>,<span class="number">3</span>]</span><br><span class="line"><span class="comment">#设置长宽为（10，5）的画图</span></span><br><span class="line">plt.figure(figsize = (<span class="number">10</span>,<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">设置折线图</span></span><br><span class="line"><span class="string">label标注图例</span></span><br><span class="line"><span class="string">marker标注数据点，o表示实心圆</span></span><br><span class="line"><span class="string">linewidth设置折现的宽度（粗细）</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">plt.plot(x,y, label = <span class="string">'产品a'</span>,</span><br><span class="line">         marker = <span class="string">'o'</span>,</span><br><span class="line">         color = <span class="string">'orange'</span>,</span><br><span class="line">         linestyle = <span class="string">'--'</span>,</span><br><span class="line">         linewidth = <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置标题</span></span><br><span class="line">plt.title(<span class="string">'销售趋势'</span>, color = <span class="string">'blue'</span>, fontsize = <span class="number">15</span>)</span><br><span class="line"><span class="comment">#设置xy轴的标签</span></span><br><span class="line">plt.xlabel(<span class="string">'月份'</span>, fontsize = <span class="number">10</span>)</span><br><span class="line">plt.ylabel(<span class="string">'销售额'</span>, fontsize = <span class="number">10</span>)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">设置网格线grid</span></span><br><span class="line"><span class="string">True可以替换为axis = x/y，表示只设置垂直于x/y的网格线</span></span><br><span class="line"><span class="string">alpha设置网格线的透明度</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">plt.grid(<span class="literal">True</span>, alpha = <span class="number">0.2</span>, linestyle = <span class="string">'--'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置xy轴刻度字体大小</span></span><br><span class="line">plt.xticks(rotation = <span class="number">0</span>, fontsize = <span class="number">10</span>)	<span class="comment">#rotation设置旋转度</span></span><br><span class="line">plt.yticks(rotation = <span class="number">0</span>, fontsize = <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置y轴刻度范围</span></span><br><span class="line">plt.ylim(<span class="number">0</span>,<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置图例</span></span><br><span class="line">plt.legend(loc = <span class="string">'upper right'</span>)	<span class="comment">#在右上角设置图例，与plt.plot中的label对应</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>对于柱状图，使用plt.bar（）。对于条形图，使用plt.barh()</p>
+<h1 id="饼图"><a href="#饼图" class="headerlink" title="饼图"></a>饼图</h1><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">things = [<span class="string">'学习'</span>, <span class="string">'娱乐'</span>, <span class="string">'睡眠'</span>, <span class="string">'其他'</span>]</span><br><span class="line">time = [<span class="number">5</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">8</span>]</span><br><span class="line"><span class="comment">#设置画布大小</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">5</span>))</span><br><span class="line"><span class="comment">#设置饼图</span></span><br><span class="line">plt.pie(time, labels=things,</span><br><span class="line">        autopct=<span class="string">'%1.1f%%'</span>,  <span class="comment">#百分比显示（保留1位小数）</span></span><br><span class="line">        startangle=<span class="number">0</span>,   <span class="comment">#绘图的起始角度（默认为0）</span></span><br><span class="line">        wedgeprops={<span class="string">'width'</span>:<span class="number">0.6</span>},   <span class="comment">#挖空为环形图，width为环形图的宽度（不设置此项则为饼图）</span></span><br><span class="line">        pctdistance=<span class="number">0.7</span>,    <span class="comment">#百分数距离圆心的距离</span></span><br><span class="line">        explode= [<span class="number">0.1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],   <span class="comment">#设置突出块</span></span><br><span class="line">        shadow = <span class="literal">True</span>   <span class="comment">#设置阴影</span></span><br><span class="line">       )</span><br><span class="line"><span class="comment">#设置标题</span></span><br><span class="line">plt.title(<span class="string">'一天的时间分布'</span>, fontsize = <span class="number">20</span>, c=<span class="string">'red'</span>)</span><br><span class="line">plt.text(<span class="number">0</span>,<span class="number">0</span>,<span class="string">'总计\n百分比'</span>)		<span class="comment">#若设置了wedgeprops,则此项表示在圆环内部增加内容</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="散点图"><a href="#散点图" class="headerlink" title="散点图"></a>散点图</h1><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置画布</span></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">10</span>))</span><br><span class="line"><span class="comment">#设置散点图</span></span><br><span class="line">plt.scatter(x,y, c=<span class="string">'red'</span>, label=<span class="string">'产品a'</span>, s=<span class="number">15</span>, alpha=<span class="number">0.6</span>)	<span class="comment">#s表示点的大小</span></span><br><span class="line"></span><br><span class="line">plt.title(<span class="string">'散点图示例'</span>, c=<span class="string">'red'</span>, fontsize=<span class="number">30</span>)</span><br><span class="line">plt.xticks(fontsize=<span class="number">15</span>)</span><br><span class="line">plt.yticks(fontsize=<span class="number">15</span>)</span><br><span class="line">plt.xlabel(<span class="string">'x轴标签'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'y轴标签'</span>)</span><br><span class="line">plt.legend(loc=<span class="string">'upper right'</span>)	<span class="comment">#图例</span></span><br><span class="line">plt.grid(<span class="literal">True</span>, alpha=<span class="number">0.3</span>)	<span class="comment">#网格线</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="箱线图"><a href="#箱线图" class="headerlink" title="箱线图"></a>箱线图</h1><p>IQR=Q3-Q1</p>
+<p>上边缘=Q3+1.5*IQR</p>
+<p>下边缘=Q1-1.5*IQR</p>
+<p>超出上下边缘的值为异常值</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">np.random.seed(<span class="number">0</span>)</span><br><span class="line">a = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">10</span>,))</span><br><span class="line">b = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">10</span>,))</span><br><span class="line">c = np.random.randint(<span class="number">0</span>,<span class="number">100</span>,(<span class="number">10</span>,))</span><br><span class="line">score = {<span class="string">'语文'</span>:a, <span class="string">'数学'</span>:b, <span class="string">'英语'</span>:c}</span><br><span class="line">df = pd.DataFrame(score)</span><br><span class="line"></span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">8</span>))</span><br><span class="line"></span><br><span class="line">plt.boxplot(df.values, tick_labels=df.columns)</span><br><span class="line">plt.ylim(<span class="number">0</span>,<span class="number">100</span>)</span><br><span class="line">plt.title(<span class="string">'成绩分布图（箱线图）'</span>, fontsize=<span class="number">20</span>, c=<span class="string">'red'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'分数'</span>)</span><br><span class="line">plt.grid(axis=<span class="string">'y'</span>, alpha=<span class="number">0.3</span>, linestyle=<span class="string">'--'</span>)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br></pre></td></tr></tbody></table></figure>
+
+<h1 id="seaborn"><a href="#seaborn" class="headerlink" title="seaborn"></a>seaborn</h1><figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">绘制直方图</span></span><br><span class="line"><span class="string">data接受数据</span></span><br><span class="line"><span class="string">x为所要绘制直方图的列数据</span></span><br><span class="line"><span class="string">kde为True时，绘制核密度估计图</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">sns.histplot(data = , x = <span class="string">'列名'</span>, kde = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#核密度估计图</span></span><br><span class="line">sns.kdeplot(data = , x=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#计数图</span></span><br><span class="line">sns.countplot(data = , x=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">绘制散点图</span></span><br><span class="line"><span class="string">hue参数设置不同组别进行对比（例如性别）</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">sns.scatterplot(data = , x=<span class="string">''</span>, y=<span class="string">''</span>, hue=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#箱线图</span></span><br><span class="line">sns.boxplot(data = , x=<span class="string">''</span>, y=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#成对关系图</span></span><br><span class="line">sns.pairplot(data = , hue=<span class="string">''</span>)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+
+        </div>
+
+        <div>
+  <div style="text-align:center;color: #999;font-size:14px;margin-bottom: 10px;">-------------本文结束<i class="icon icon-paw" style="margin: 0 3px;"></i>感谢您的阅读-------------</div>
+</div>
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新：<time datetime="2026-05-03T13:04:16.716Z" itemprop="dateUpdated">2026-05-03 21:04:16</time>
+</span>
+
+
+        
+          原文链接：<a href="/blog/posts/142c191/" target="_blank" rel="external">https://oliverrobert.github.io/posts/142c191/</a>
+        
+    </div>
+    <footer>
+        <div onclick="location.href='https://oliverrobert.github.io/about/'">
+            <img src="/blog/img/avatar.jpg" alt="Oliver">
+            <a>Oliver</a>
+        </div>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/matplotlib-seaborn/" rel="tag">matplotlib,seaborn</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://oliverrobert.github.io/posts/142c191/&title=《matplotlib-seaborn》 — Oliver's Blog&pic=https://oliverrobert.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://oliverrobert.github.io/posts/142c191/&title=《matplotlib-seaborn》 — Oliver's Blog&source=记录学习 or 发疯日常" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://oliverrobert.github.io/posts/142c191/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《matplotlib-seaborn》 — Oliver's Blog&url=https://oliverrobert.github.io/posts/142c191/&via=https://oliverrobert.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://oliverrobert.github.io/posts/142c191/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/blog/posts/7b642e0c/" id="post-prev" class="post-nav-link">
+        <h4 class="title" >
+          上一篇：ML
+        </h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/blog/posts/3f7f6b33/" id="post-next" class="post-nav-link">
+        <h4 class="title" data-hover="下一篇：pandas">下一篇：pandas</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+    
+
+    
+
+    
+
+
+</article>
+
+</div>
+
+        <footer class="footer">
+    <div class="footer-content">
+        <span class="power">
+            <i class="icon icon-lg icon-copyright"></i>
+            2021
+            <i class="icon icon-lg icon-heartbeat"></i>
+            <a href="https://oliverrobert.github.io">https://oliverrobert.github.io/</a>
+            <!-- <br/>
+            Power by
+            <a href="https://hexo.io/" target="_blank" rel="external nofollow">Hexo</a>&nbsp;·&nbsp;
+            Theme
+            <a class="tomotoeslink" href="https://github.com/tomotoes/hexo-theme-tomotoes/" target="_blank" rel="external nofollow">tomotoes</a> -->
+        </span>
+
+        <br/>
+
+        <span id="RunTime" style="color:#a7a7a2;"></span>
+        <br/>
+
+        <!-- <span>
+            
+	<i class="icon icon-lg icon-user">
+<span id="busuanzi_site_uv" style='display:none'>
+       访问用户：<span id="busuanzi_value_site_uv"></span>
+    </span>人</i>
+    ·
+    <i class="icon icon-lg icon-eye">
+    <span id="busuanzi_site_pv" style='display:none'>
+      访问次数：<span id="busuanzi_value_site_pv"></span>
+    </span>次
+    </i>
+
+
+        </span>
+        <br/> -->
+
+        <!-- <span class="license"><a  target="_blank" rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">博客内容遵循 知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span> -->
+    </div>
+</footer>
+
+    </main>
+    
+        
+
+    
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://oliverrobert.github.io/posts/142c191/&title=《matplotlib-seaborn》 — Oliver's Blog&pic=https://oliverrobert.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://oliverrobert.github.io/posts/142c191/&title=《matplotlib-seaborn》 — Oliver's Blog&source=记录学习 or 发疯日常" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://oliverrobert.github.io/posts/142c191/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《matplotlib-seaborn》 — Oliver's Blog&url=https://oliverrobert.github.io/posts/142c191/&via=https://oliverrobert.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://oliverrobert.github.io/posts/142c191/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p class="wechatshare">扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3aS27DMAwFwNz/0u02QOvkkVICmBqvCiO1NV4Q/D0e8fXzdF3d/3s9/+bqmclbtl0YGBi3ZeRHya+r4+bPz8+GgYFxDuN1QEyCYxKO82hZDdYYGBgY1UP0QnD+XgwMDIw84PaQSSmLgYGBsdIySxK+6hO+WotjYGDckJF33b//90fmGxgYGLdi7Gr3J8eqhubCqTAwMEYz8gC3MnTc1WJ7s5aBgYExlJGH0epwMW/A5fejvBUDA2Mo43XQrB4lXwjbtcyBgYFxAqPagl/hJQlieQCAgYExmtEbDFQDaHXkufIRMTAw5jHygeLKqkQ14SunoRgYGKMZSc+qOqTsjTbzBtybT4CBgTGOkfzzSpFZXVHtJaYYGBgnM9Z3RPMFi3zl4nJbBAMD42BG/uK8GZePCqL3YmBgHMPovawXZHeNTi93RjAwMMYxdi2kVgvXalL4pojFwMA4hpE/IgHnd6ppIgYGxjmMJLBW7+f7D0kaWi2eMTAwpjLyx1UXWPOxZbXxd9l0w8DAGM3oHWVvUdr7lBgYGOcweslZb/G0R41yWwwMjHGM9WWvQiOsWNzm78XAwJjNyK+9Tbc8HewtpWFgYMxjrC/N94rV5pCy2v/DwMAYxFgPfCvH+kgtjoGBcTyjd7jq8DL/lBgYGBgrNXGeYuYrF//8EgMD4wBGdZGrmjLmYbRZSGNgYIxm9ErHKAgGTb08ZG8YamJgYNyP8Qv8sUHPSCeKZQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <!-- waves按钮特效 -->
+<script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+
+<!-- 主题配置脚本 -->
+<script>
+var BLOG = { ROOT: '/blog/', SHARE: true, REWARD: false };
+</script>
+
+<!-- jquery -->
+<script src="/blog/js/jquery.min.js?v=3.0"></script>
+
+<!-- 搜索 -->
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item waves-block waves-effect" onclick="location.href='{path}'">
+    <div class="title ellipsis" title="{title}">{title}</div>
+</li>
+</template>
+
+
+<!-- main博客脚本 -->
+<script src="/blog/js/main.min.js?v=3.0" ></script>
+
+<!-- 动画&配置 -->
+<script src="/blog/js/script.min.js?v=3.0" ></script>
+
+<!-- 相册&配置 -->
+<script src="/blog/js/photoswipe.min.js?v=3.0.min.js?v=3.0" ></script>
+<script src="/blog/js/photoswipe-ui-default.min.js?v=3.0.min.js?v=3.0"></script>
+
+<!-- 脚本管理 -->
+<script>
+
+if(window.innerWidth > 800){
+	/* 3D标题 */
+	$(".content-header").on("mousemove", threedee);
+
+	/* 底部追随鼠标 */
+	$(".footer").hover(2);
+
+	/* gotop键的涟漪 */
+	$("#gotop").hover(1);
+
+	/* 赞赏的粒子雨 */
+	$("#reward").hover(3);
+
+	/* 微信公众号的底部渲染 */
+	$("#wechat").hover(4);
+
+    /* 标题跳动 */
+    $(".archivestitle").bumpyText();
+
+	/* 图片点击放大 */
+	const postimg = jQuery(".post-content img:not(.github-emoji)");
+	postimg.on("click",function(){
+
+		mask.classList.add("in");
+		main.classList.add("Mask");
+		menu.classList.add("Mask");
+		var myimg = this.cloneNode(true);
+		myimg.classList.add("imgShow");
+
+		setTimeout(function(){
+			jQuery(myimg).animate({
+				opacity:"1"
+			},1000);
+		},0);
+
+		document.body.appendChild(myimg);
+
+		myimg.onclick=function(){
+			document.body.removeChild(myimg);
+			mask.classList.remove("in");
+			main.classList.remove("Mask");
+			menu.classList.remove("Mask");
+		};
+
+	});
+
+}
+
+/* 名字跳动 */
+$("#name").bumpyText();
+
+
+/* 网站运行时间 */
+setInterval(function () {
+	setTime("2026/02/02");
+}, 1000);
+
+/* 文章块的淡出 */
+postshow();
+
+/* 座右铭 */
+
+   getHitokoto();
+
+
+
+/* 粘贴提示 */
+G($(".post-content"), location.href, "Oliver");
+
+
+/* 控制台 */
+if (window.console && window.console.log) {
+	setTimeout(function () {
+		console.log("\n %c Oliver'sblog %c  © Oliver Robert  https://oliverrobert.github.io \n\n", "color:#FFFFFB;background:#1abc9c;padding:5px 0;border-radius:.5rem 0 0 .5rem;", "color:#FFFFFB;background:#080808;padding:5px 0;border-radius:0 .5rem .5rem 0;");
+	}, 0);
+}
+
+</script>
+
+
+
+
+<!-- 公式渲染 -->
+
+
+
+<!-- 不蒜子 -->
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    console.log('%c [分享修复] 补丁脚本开始执行', 'background: #222; color: #bada55');
+
+    var maxAttempts = 50;
+    var attempt = 0;
+    var shareFixed = false;
+    var wxFixed = false;
+
+    // 修复分享按钮
+    function fixShareBtn() {
+        var fab = document.getElementById('shareFab');
+        var pageShare = document.getElementById('pageShare');
+
+        if (!fab || !pageShare) {
+            return false;
+        }
+
+        if (fab.getAttribute('data-fixed') === 'true') {
+            return true;
+        }
+
+        // 克隆节点清除旧事件
+        var newFab = fab.cloneNode(true);
+        fab.parentNode.replaceChild(newFab, fab);
+        fab = newFab;
+
+        console.log('%c [分享修复] 绑定分享按钮事件', 'color: #0088ff');
+
+        var toggleMenu = function(e) {
+            console.log('%c [分享修复] 分享按钮被点击', 'background: green; color: white');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            pageShare.classList.toggle('in');
+        };
+
+        fab.addEventListener('click', toggleMenu, false);
+        fab.addEventListener('touchstart', toggleMenu, { passive: false });
+
+        // 点击外部关闭
+        document.addEventListener('click', function(e) {
+            if (!fab.contains(e.target) && !pageShare.contains(e.target)) {
+                pageShare.classList.remove('in');
+            }
+        });
+
+        fab.setAttribute('data-fixed', 'true');
+        console.log('%c [分享修复] ✅ 分享按钮修复成功', 'color: green');
+        return true;
+    }
+
+    // 修复微信分享按钮 - 关键新增!
+    function fixWxShareBtn() {
+        var wxModal = document.getElementById('wxShare');
+        var wxBtns = document.querySelectorAll('.wxFab');
+
+        if (!wxModal || wxBtns.length === 0) {
+            return false;
+        }
+
+        // 检查是否已修复
+        if (wxBtns[0].getAttribute('data-wx-fixed') === 'true') {
+            return true;
+        }
+
+        console.log('%c [分享修复] 找到 ' + wxBtns.length + ' 个微信分享按钮', 'color: #0088ff');
+
+        // 为每个微信分享按钮绑定事件
+        wxBtns.forEach(function(wxBtn, index) {
+            // 克隆节点清除旧事件
+            var newWxBtn = wxBtn.cloneNode(true);
+            wxBtn.parentNode.replaceChild(newWxBtn, wxBtn);
+            
+            var toggleWxModal = function(e) {
+                console.log('%c [分享修复] 微信分享按钮被点击!', 'background: red; color: white');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // 切换微信弹窗显示/隐藏
+                if (wxModal.classList.contains('in')) {
+                    wxModal.classList.remove('in');
+                    wxModal.classList.remove('ready');
+                    // 移除遮罩
+                    var mask = document.getElementById('mask');
+                    if (mask) {
+                        mask.classList.remove('in');
+                    }
+                } else {
+                    wxModal.classList.add('ready');
+                    setTimeout(function() {
+                        wxModal.classList.add('in');
+                    }, 0);
+                    // 添加遮罩
+                    var mask = document.getElementById('mask');
+                    if (mask) {
+                        mask.classList.add('in');
+                    }
+                }
+            };
+
+            newWxBtn.addEventListener('click', toggleWxModal, false);
+            newWxBtn.addEventListener('touchstart', toggleWxModal, { passive: false });
+            newWxBtn.setAttribute('data-wx-fixed', 'true');
+            
+            console.log('%c [分享修复] 微信按钮 #' + index + ' 绑定完成', 'color: #0088ff');
+        });
+
+        // 绑定关闭按钮
+        var closeBtn = wxModal.querySelector('.close');
+        if (closeBtn && !closeBtn.getAttribute('data-close-fixed')) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                wxModal.classList.remove('in');
+                setTimeout(function() {
+                    wxModal.classList.remove('ready');
+                }, 300);
+                var mask = document.getElementById('mask');
+                if (mask) {
+                    mask.classList.remove('in');
+                }
+            });
+            closeBtn.setAttribute('data-close-fixed', 'true');
+        }
+
+        // 点击遮罩关闭
+        var mask = document.getElementById('mask');
+        if (mask && !mask.getAttribute('data-wx-mask-fixed')) {
+            mask.addEventListener('click', function() {
+                if (wxModal.classList.contains('in')) {
+                    wxModal.classList.remove('in');
+                    setTimeout(function() {
+                        wxModal.classList.remove('ready');
+                    }, 300);
+                    mask.classList.remove('in');
+                }
+            });
+            mask.setAttribute('data-wx-mask-fixed', 'true');
+        }
+
+        console.log('%c [分享修复] ✅ 微信分享修复成功', 'color: green');
+        return true;
+    }
+
+    // 轮询检查并修复
+    var timer = setInterval(function() {
+        attempt++;
+        
+        if (!shareFixed) {
+            shareFixed = fixShareBtn();
+        }
+        
+        if (!wxFixed) {
+            wxFixed = fixWxShareBtn();
+        }
+        
+        // 两个都修复成功或超过最大尝试次数
+        if ((shareFixed && wxFixed) || attempt > maxAttempts) {
+            clearInterval(timer);
+            if (shareFixed && wxFixed) {
+                console.log('%c [分享修复] 🎉 所有分享功能修复完成!', 'background: green; color: white; font-size: 14px; padding: 5px;');
+            } else {
+                console.warn('[分享修复] 修复超时 - 分享按钮:' + shareFixed + ', 微信按钮:' + wxFixed);
+            }
+        }
+    }, 500);
+})();
+</script>
+
+</body>
+</html>
